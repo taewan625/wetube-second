@@ -30,9 +30,18 @@ npm i --save-dev package; --save-dev 가 package를 devDependencies로 구분 �
 
 
 babel
-# node
+# node latest JS와 babel 수정
 read latest js code
  *touch babel.config.json ; touch는 macOS, linux file 생성 명령어
 1) npm install --save-dev @babel/core
 2) npm install @babel/preset-env --save-dev ; latest JavaScript
 3) touch babel.config.json
+
+# nodemon; latest JS와 babel 수정 후 terminal 돌아오는 것 방지
+1) npm i nodemon --save-dev ; nodemon이란 untilities를 설치
+2) npm install @babel/core @babel/node --save-dev
+
+# package.json scripts 수정
+"nodemon으로 실시간으로 --exec안의 내용의 수정 확인 
+babel-node index.js ; index.js라는 file을 node를 이용해서 browser 밖에서 js running
+거기다가 babel을 통해서 latest JS code를 이용할 수 있게 수정

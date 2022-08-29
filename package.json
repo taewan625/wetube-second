@@ -7,7 +7,7 @@
     "url": "git+https://github.com/taewan625/wetube-second.git"
   },
   "scripts": {
-    "win": "node index.js"
+    "dev:server": "nodemon --exec babel-node index.js"
   },
   "author": "",
   "license": "MIT",
@@ -20,6 +20,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.18.13",
-    "@babel/preset-env": "^7.18.10"
+    "@babel/node": "^7.18.10",
+    "@babel/preset-env": "^7.18.10",
+    "nodemon": "^2.0.19"
   }
 }

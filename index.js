@@ -1,3 +1,2 @@
-const express = require("express");
-
-const app = express();
+// const express = require("express"); old code
+import { express } from "express";

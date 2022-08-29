@@ -36,5 +36,3 @@ read latest js code
 1) npm install --save-dev @babel/core
 2) npm install @babel/preset-env --save-dev ; latest JavaScript
 3) touch babel.config.json
-# nodemon ; babel을 직접 사용하지 않기 위함
-1) npm install @babel/core @babel/node --save-dev

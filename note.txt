@@ -1,0 +1,17 @@
+NodeJs : js rum time ; browser 밖에서 작동하는 것 -> 다른 곳에서 사용 가능하게 됨.
+npm은 js를 위한 패키지 매니저 이다. ; npm과 nodeJS는 같이 써야한다 상호작용 + node JS package download / npdeJs를 npm 없이 사용할 수 없다.
+Npm: 천재들이 many small package를 만들어주는데 그것을 사용할 수 있는 것 npm can share the packages
+
+Package 종류
+express ; 
+
+Yarn 페북에서 만든 것
+
+Json: 프로그래머가 파일에 정보를 저장하기 위해 만든 방식 중 하나
+
+* git repository connect 방법
+1) folder 생성 -> vscode open -> vscode terminal git init 
+2) make new repository in github.com
+3) vscode terminal: git remote add origin github URL ex)git remote add origin https://github.com/taewan625/wetube-second
+* package.json까지 만들기
+4) npm init

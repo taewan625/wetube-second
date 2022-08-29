@@ -1,0 +1,16 @@
+{
+  "name": "wetube",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taewan625/wetube-second.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/taewan625/wetube-second/issues"
+  },
+  "homepage": "https://github.com/taewan625/wetube-second#readme"
+}

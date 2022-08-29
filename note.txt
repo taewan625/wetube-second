@@ -20,8 +20,21 @@ package.json 기능
 1) scripts; node index.js로 작동을 하는 것을 scripts라는 object를 만들어서 npm run variable을 하면 같은 기능으로 작동
 scripts의 작동은 해당위치에 정확히 있어야 작동을 한다!! 아주 중요
 2) dependencies; package(express)가 작동되려면 필요한 packages
+3) devDependencies; for developer
 
 npm i package: package-lock.json과 node_module 생성
  * node_module: every package(with install in npm) saved in node_module.
 npm i: package.json 안의 dependencies를 알아서 설치해 준다.
     * package-lock: 이게 포함 되어있으면 version도 설정하는 것이여서 아주 안전 완벽하다.
+npm i --save-dev package; --save-dev 가 package를 devDependencies로 구분 시켜준다.
+
+
+babel
+# node
+read latest js code
+ *touch babel.config.json ; touch는 macOS, linux file 생성 명령어
+1) npm install --save-dev @babel/core
+2) npm install @babel/preset-env --save-dev ; latest JavaScript
+3) touch babel.config.json
+# nodemon ; babel을 직접 사용하지 않기 위함
+1) npm install @babel/core @babel/node --save-dev

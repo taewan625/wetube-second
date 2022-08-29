@@ -2,15 +2,20 @@
   "name": "wetube",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/taewan625/wetube-second.git"
+  },
+  "scripts": {
+    "win": "node index.js"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/taewan625/wetube-second/issues"
   },
-  "homepage": "https://github.com/taewan625/wetube-second#readme"
+  "homepage": "https://github.com/taewan625/wetube-second#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
 }

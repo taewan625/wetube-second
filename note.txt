@@ -15,3 +15,13 @@ Json: 프로그래머가 파일에 정보를 저장하기 위해 만든 방식 �
 3) vscode terminal: git remote add origin github URL ex)git remote add origin https://github.com/taewan625/wetube-second
 * package.json까지 만들기
 4) npm init
+
+package.json 기능
+1) scripts; node index.js로 작동을 하는 것을 scripts라는 object를 만들어서 npm run variable을 하면 같은 기능으로 작동
+scripts의 작동은 해당위치에 정확히 있어야 작동을 한다!! 아주 중요
+2) dependencies; package(express)가 작동되려면 필요한 packages
+
+npm i package: package-lock.json과 node_module 생성
+ * node_module: every package(with install in npm) saved in node_module.
+npm i: package.json 안의 dependencies를 알아서 설치해 준다.
+    * package-lock: 이게 포함 되어있으면 version도 설정하는 것이여서 아주 안전 완벽하다.

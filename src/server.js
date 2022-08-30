@@ -3,18 +3,26 @@ import express from "express";
 const PORT = 4000;
 
 // 1) create server
-const app = express(); // relate express code have to wirte down this line
+const app = express();
 
 // 2) configue(설정) server
-const handleHome = () => console.log("hi server");
-app.get("/", handleHome); // browser의 get request "/". server의 respond(handleHome)
+const handleHome = (req, res) => {
+  // Express 4.X API에 req와 res에 관한 property(ex)end,send)가 정리 되어 있다.
+  // console.log(req); // req.object를 볼 수 있다.
+  // console.log(res); // res.object를 볼 수 있다.
+  return res.end(); // browser에게 아무것도 안보내고 종료
+  return res.send("res.send()");
+};
+const handleLogin = (req, res) => {
+  return res.send("res.send('login')");
+};
+
+app.get("/", handleHome);
+// express work handleHome({...req...}, {...res...})
+app.get("/login", handleLogin);
 
 // 3) open server
 const handleListening = () =>
   console.log(`✅ server listening on port http://localhost:${PORT}`);
-
-app.listen(PORT, handleListening);
-
-// get is HTTP method, http is communicate with server method
-// 1) how http reuest working ; app.get의 get이 browser가 server에게 request 보내는 것 *request: browser said hey I want to get URL
-// 2) how to respond GET_request ; request ex) "/" 들어오면 server은 그 request를 다룰 수 있다 ex) handleHome
+app.listen(PORT, handleListening); // in express, route handler doesn't have event. but they have two obj
+// app.listen(PORT) 만 있어도 됨

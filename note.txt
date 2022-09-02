@@ -55,3 +55,5 @@ morgan은 Node.js용 request logger middleware 이다.
 
 morgan과 직접만든 middleware 차이점
 정교성 : path, method res time 을 정교하게 보여준다
+
+routers는 내가 작업중인 주제를 기반으로 URL을 그룹화해준다   /  /users /videos

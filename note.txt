@@ -45,3 +45,8 @@ read latest js code
 "nodemon으로 실시간으로 --exec안의 내용의 수정 확인 
 babel-node index.js ; index.js라는 file을 node를 이용해서 browser 밖에서 js running
 거기다가 babel을 통해서 latest JS code를 이용할 수 있게 수정
+
+routes: server listening and moving URL
+browser가 요청을 하면 서버에서 보내주는 것이여서 브라우저가 이동을 하는 것이 아니라 그자리에서 받는 역할을 하는 것이다
+
+logger: 기록의 의미

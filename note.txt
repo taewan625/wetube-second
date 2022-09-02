@@ -50,3 +50,8 @@ routes: server listening and moving URL
 browser가 요청을 하면 서버에서 보내주는 것이여서 브라우저가 이동을 하는 것이 아니라 그자리에서 받는 역할을 하는 것이다
 
 logger: 기록의 의미
+
+morgan은 Node.js용 request logger middleware 이다.
+
+morgan과 직접만든 middleware 차이점
+정교성 : path, method res time 을 정교하게 보여준다

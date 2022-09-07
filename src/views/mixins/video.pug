@@ -5,5 +5,5 @@ mixin videoMixin(video)
             a(href=`/videos/${video.id}`)=video.title
         ul
             li #{video.rating}/5
-            li #{video.views} views.
+            li #{video.views} #{video.views <=1 ? "view" : "views"}
             li id: #{video.id}

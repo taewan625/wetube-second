@@ -1,9 +1,10 @@
 extends base.pug
+include mixins/video
+//- mixin data를 넣어줘야함
 
 block content
   h2 welcome here you will see the trending videos
-  ul
-    each video in videos
-      li=video
-    else
-      li sorry nothing found
+  each potato in videos
+    +videoMixin(potato)
+  else
+    li sorry nothing found.

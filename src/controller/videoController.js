@@ -1,5 +1,9 @@
 export const trending = (req, res) => {
-  const videos = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const videos = [
+    { title: "video1", rating: 5, views: 39, id: 1 },
+    { title: "video2", rating: 5, views: 39, id: 2 },
+    { title: "video3", rating: 5, views: 39, id: 3 },
+  ];
   return res.render("home", { pageTitle: "Home", videos });
 };
 export const see = (req, res) => res.render("watch");

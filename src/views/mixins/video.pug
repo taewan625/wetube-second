@@ -1,8 +1,9 @@
 //- mixin: Data를 받을 수 있는 일종의 미리 만들어진 HTML block.
-mixin videoMixin(info)
+mixin videoMixin(video)
     div
-        h4=info.title
+        h4
+            a(href=`/videos/${video.id}`)=video.title
         ul
-            li #{info.rating}/5
-            li #{info.views} views.
-            li id: #{info.id}
+            li #{video.rating}/5
+            li #{video.views} views.
+            li id: #{video.id}

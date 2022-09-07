@@ -11,7 +11,9 @@ export const watch = (req, res) => {
   const video = videos[id - 1];
   return res.render("watch", { pageTitle: video.title, video });
 };
-export const edit = (req, res) => res.render("edit");
-export const search = (req, res) => res.send("search");
-export const upload = (req, res) => res.send("upload");
-export const deleteVideo = (req, res) => res.send("deleteVideo");
+export const getEdit = (req, res) => {
+  const { id } = req.params; // 주소에 포함된 변수를 담는다. 예를 들어 https://localhost:8000/videos/12345/edit 라는 주소가 있다면 12345를 담는다
+  const video = videos[id - 0];
+  return res.render("edit", { pageTitle: `${video.title} edit`, video });
+};
+export const postEdit = (req, res) => res.send("save edit");

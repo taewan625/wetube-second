@@ -16,4 +16,10 @@ export const getEdit = (req, res) => {
   const video = videos[id - 0];
   return res.render("edit", { pageTitle: `${video.title} edit`, video });
 };
-export const postEdit = (req, res) => res.send("save edit");
+export const postEdit = (req, res) => {
+  const { id } = req.params;
+  const { title } = req.body; // .pug form의 name. JS형식으로 변경될시 (req.body)에선 title이 object key가 됨.
+  console.log(req.body);
+  videos[id - 1].title = title; // fakedatabase라서 이럴수 밖에없음
+  return res.redirect(`/videos/${id}`);
+};

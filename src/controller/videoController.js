@@ -1,7 +1,12 @@
 import VideoModel from "../models/Video";
 
+// callback function
 export const home = (req, res) => {
-  return res.render("home", { pageTitle: "Home" });
+  VideoModel.find({}, (error, videos) => {
+    console.log("errors", error);
+    console.log("videos", videos);
+  });
+  return res.render("home", { pageTitle: "Home", videos });
 };
 export const watch = (req, res) => {
   const { id } = req.params;

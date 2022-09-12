@@ -17,5 +17,23 @@ const videoSchema = new mongoose.Schema({
   },
 });
 
+// middleware; update, upload하기전에 미리 무엇인가를 중간 점검 하고 싶을 때, hashtag 점검이라던지, user sign 시 존재하는 id인지
+// middleware는 VideoModel 이전에 만들어져야한다.
+/*
+videoSchema.pre("save", async function () {
+  this.hashtags = this.hashtags[0]
+    .split(",")
+    .map((word) => (word.startsWith("#") ? word : `#${word}`));
+  console.log("asdfa", this);
+});
+*/
+// 내 mongoose func 만들기
+videoSchema.static("formatHashtags", function (hashtags) {
+  return hashtags
+    .split(",")
+    .map((word) => (word.startsWith("#") ? word : `#${word}`));
+});
+
 const VideoModel = mongoose.model("Video", videoSchema);
+
 export default VideoModel;

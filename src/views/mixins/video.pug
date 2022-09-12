@@ -4,6 +4,10 @@ mixin videoMixin(video)
         h4
             a(href=`/videos/${video.id}`)=video.title
         p=video.description
+        ul  
+            each hashtag in video.hashtags
+                li=hashtag
         small=video.createdAt
+
         hr
         //- video. 으로 값을 낼 수 있는 이유는 1) home.pug에서 videos를 js로 부터 받는데 이 videos는 videoController의 home을 보면 VideoModel.find로 받아온 값이다.

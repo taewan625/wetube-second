@@ -7,10 +7,10 @@
 import mongoose from "mongoose";
 
 const videoSchema = new mongoose.Schema({
-  title: { type: String, required: true }, // title: "herry porter" 이딴식으로 detail 안넣고 string 넣음
-  description: String, // {type: String}과 String 동일
+  title: { type: String, required: true, trim: true }, // title: "herry porter" 이딴식으로 detail 안넣고 string 넣음
+  description: { type: String, required: true, trim: true }, // {type: String}과 String 동일
   createdAt: { type: Date, required: true, default: Date.now },
-  hashtags: [{ type: String }],
+  hashtags: [{ type: String, trim: true }],
   meta: {
     views: { type: Number, default: 0 },
     rating: { type: Number, default: 0 },

@@ -3,7 +3,7 @@ mixin videoMixin(video)
     div
         h4
             a(href=`/videos/${video.id}`)=video.title
-        ul
-            li #{video.rating}/5
-            li #{video.views} #{video.views <=1 ? "view" : "views"}
-            li id: #{video.id}
+        p=video.description
+        small=video.createdAt
+        hr
+        //- video. 으로 값을 낼 수 있는 이유는 1) home.pug에서 videos를 js로 부터 받는데 이 videos는 videoController의 home을 보면 VideoModel.find로 받아온 값이다.

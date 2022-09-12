@@ -1,12 +1,12 @@
 import VideoModel from "../models/Video";
 
-// callback function
-export const home = (req, res) => {
-  VideoModel.find({}, (error, videos) => {
-    console.log("errors", error);
-    console.log("videos", videos);
-  });
-  return res.render("home", { pageTitle: "Home", videos });
+export const home = async (req, res) => {
+  try {
+    const videos = await VideoModel.find({});
+    return res.render("home", { pageTitle: "Home", videos });
+  } catch (error) {
+    return res.render("server-error", { error });
+  }
 };
 export const watch = (req, res) => {
   const { id } = req.params;

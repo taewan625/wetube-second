@@ -7,7 +7,7 @@
     "url": "git+https://github.com/taewan625/wetube-second.git"
   },
   "scripts": {
-    "dev:server": "nodemon --exec babel-node src/server.js"
+    "dev:server": "nodemon --exec babel-node src/init.js"
   },
   "author": "",
   "license": "MIT",
@@ -17,6 +17,7 @@
   "homepage": "https://github.com/taewan625/wetube-second#readme",
   "dependencies": {
     "express": "^4.18.1",
+    "mongoose": "^6.6.0",
     "morgan": "^1.10.0",
     "pug": "^3.0.2"
   },

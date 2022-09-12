@@ -5,39 +5,54 @@ export const home = async (req, res) => {
   console.log(videos);
   return res.render("home", { pageTitle: "Home", videos });
 };
-export const watch = (req, res) => {
+export const watch = async (req, res) => {
   const { id } = req.params;
-  return res.render("watch", { pageTitle: "watch" });
+  const video = await VideoModel.findById(id);
+  if (video === null) {
+    return res.render("404", { pageTitle: "Wrong url" });
+  } else {
+    return res.render("watch", { pageTitle: video.title, video });
+  }
 };
-export const getEdit = (req, res) => {
-  const { id } = req.params; // 주소에 포함된 변수를 담는다. 예를 들어 https://localhost:8000/videos/12345/edit 라는 주소가 있다면 12345를 담는다
-  return res.render("edit", { pageTitle: `edit` });
-};
-export const postEdit = (req, res) => {
+export const getEdit = async (req, res) => {
   const { id } = req.params;
-  const { title } = req.body; // .pug form의 name. JS형식으로 변경될시 (req.body)에선 title이 object key가 됨.
+  const video = await VideoModel.findById(id);
+  if (!video) {
+    return res.render("404", { pageTitle: "Wrong url" });
+  } else {
+    return res.render("edit", { pageTitle: `edit: ${video.title}`, video });
+  }
+};
+export const postEdit = async (req, res) => {
+  const { id } = req.params;
+  const { title, description, hashtags } = req.body;
+  const video = await VideoModel.findById(id);
+  if (!video) {
+    return res.render("404", { pageTitle: "Wrong url" });
+  }
+  video.title = title;
+  video.description = description;
+  (video.hashtags = hashtags
+    .split(",")
+    .map((word) => (word.startsWith("#") ? word : `#${word}`))),
+    await video.save(); //VideoModel.findeById를 video variable로 지정했으므로 video.save라고 한다.
   return res.redirect(`/videos/${id}`);
 };
 
 export const getUpload = (req, res) => {
   return res.render("upload", { pageTitle: "upload video" });
 };
-
-/* upload video의 input data save 후 db에 저장하는 방법
-1) document 만들기
-2) database에 저장
-*/
-// 1) video doc은 만들어졌지만 아직 JS에서만 존재
 export const postUpload = async (req, res) => {
   const { title, description, hashtags } = req.body;
   try {
     await VideoModel.create({
       title,
       description,
-      hashtags: hashtags.split(",").map((word) => `#${word}`),
-      // createdAt: Date.now(),         # Video.js에서 default값으로 지정함
-      // meta: { views: 0, rating: 0 }, # default 값으로 지정
+      hashtags: hashtags
+        .split(",")
+        .map((word) => (word.startsWith("#") ? word : `#${word}`)),
     });
+
     return res.redirect("/");
   } catch (error) {
     return res.render("upload", {

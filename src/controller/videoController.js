@@ -30,16 +30,19 @@ export const getUpload = (req, res) => {
 // 1) video doc은 만들어졌지만 아직 JS에서만 존재
 export const postUpload = async (req, res) => {
   const { title, description, hashtags } = req.body;
-  const video = new VideoModel({
-    title,
-    description,
-    createdAt: Date.now(),
-    hashtags: hashtags.split(",").map((word) => `#${word}`),
-    meta: { views: 0, rating: 0 },
-    // mongoose가 고유 _id도 준다.
-  });
-  // 2) database save
-  await video.save(); //save는 promise를 return함. db에 video data 저장할때까지 wait해야함, 저장되면 이것을 document로 반환
-  // 2) database save의 다른 방법으로 const video = new VideoModel 을 await VideoModel.create으로도 할 수 있다. 이러면 js용 doc 안만들어도 됨
-  return res.redirect("/");
+  try {
+    await VideoModel.create({
+      title,
+      description,
+      hashtags: hashtags.split(",").map((word) => `#${word}`),
+      // createdAt: Date.now(),         # Video.js에서 default값으로 지정함
+      // meta: { views: 0, rating: 0 }, # default 값으로 지정
+    });
+    return res.redirect("/");
+  } catch (error) {
+    return res.render("upload", {
+      pageTitle: "Upload Video",
+      errorMessage: error._message,
+    });
+  }
 };

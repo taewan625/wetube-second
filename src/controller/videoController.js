@@ -16,7 +16,7 @@ export const watch = async (req, res) => {
 };
 export const getEdit = async (req, res) => {
   const { id } = req.params;
-  const video = await VideoModel.findById(id);
+  const video = await VideoModel.findById(id); // edit.pug에서 videoDB의 object를 이용하므로 findById가 적합
   if (!video) {
     return res.render("404", { pageTitle: "Wrong url" });
   } else {
@@ -26,16 +26,18 @@ export const getEdit = async (req, res) => {
 export const postEdit = async (req, res) => {
   const { id } = req.params;
   const { title, description, hashtags } = req.body;
-  const video = await VideoModel.findById(id);
+  const video = await VideoModel.exists({ _id: id }); // Video db의 object의 유무(true, false)만 필요하지 object자체가 필요하지는 않음
   if (!video) {
     return res.render("404", { pageTitle: "Wrong url" });
   }
-  video.title = title;
-  video.description = description;
-  (video.hashtags = hashtags
-    .split(",")
-    .map((word) => (word.startsWith("#") ? word : `#${word}`))),
-    await video.save(); //VideoModel.findeById를 video variable로 지정했으므로 video.save라고 한다.
+  // mongoose method 방법
+  await VideoModel.findByIdAndUpdate(id, {
+    title,
+    description,
+    hashtags: hashtags
+      .split(",")
+      .map((word) => (word.startsWith("#") ? word : `#${word}`)),
+  });
   return res.redirect(`/videos/${id}`);
 };
 
@@ -52,7 +54,6 @@ export const postUpload = async (req, res) => {
         .split(",")
         .map((word) => (word.startsWith("#") ? word : `#${word}`)),
     });
-
     return res.redirect("/");
   } catch (error) {
     return res.render("upload", {

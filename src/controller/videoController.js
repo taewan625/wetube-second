@@ -1,7 +1,7 @@
 import VideoModel from "../models/Video";
 
 export const home = async (req, res) => {
-  const videos = await VideoModel.find({});
+  const videos = await VideoModel.find({}).sort({ createdAt: "desc" });
   return res.render("home", { pageTitle: "Home", videos });
 };
 export const watch = async (req, res) => {
@@ -62,4 +62,20 @@ export const deleteVideo = async (req, res) => {
   const { id } = req.params;
   await VideoModel.findByIdAndDelete(id);
   return res.redirect("/");
+};
+
+export const search = async (req, res) => {
+  const { keyword } = req.query;
+  let videos = [];
+  if (keyword) {
+    // videos에 const 붙이면 if문 안에서만 존재하게 되여서 res.render에서 undefined 됨
+    videos = await VideoModel.find({
+      title: {
+        // mongoDB의 filter engine_operator
+        $regex: new RegExp(keyword, "i"), // mongodb의 문법이다!!
+        // $gt
+      },
+    });
+  }
+  res.render("search", { pageTitle: "search", videos });
 };

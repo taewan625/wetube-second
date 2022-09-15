@@ -71,7 +71,7 @@ export const search = async (req, res) => {
     // videos에 const 붙이면 if문 안에서만 존재하게 되여서 res.render에서 undefined 됨
     videos = await VideoModel.find({
       title: {
-        // mongoDB의 filter engine_operator
+        // mongoDB의 filter engine_operator: Video 중에서 $regex(내가 정한 정규식을 따르는 것을 select), 내가 정한 정규식: New RegExp(JS func)
         $regex: new RegExp(keyword, "i"), // mongodb의 문법이다!!
         // $gt
       },

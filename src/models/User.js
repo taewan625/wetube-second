@@ -1,4 +1,4 @@
-import bcypt from "bcrypt";
+import bcrypt from "bcrypt";
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
@@ -12,9 +12,9 @@ const userSchema = new mongoose.Schema({
 // this: userSchema를 의미한다
 
 userSchema.pre("save", async function () {
-  this.password = await bcypt.hash(this.password, 5);
+  this.password = await bcrypt.hash(this.password, 5);
 });
 
-const userModel = mongoose.model("User", userSchema);
+const UserModel = mongoose.model("User", userSchema);
 
-export default userModel;
+export default UserModel;

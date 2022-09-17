@@ -67,7 +67,7 @@ export const postLogin = async (req, res) => {
       .render("login", { pageTitle, errorMessage: "This Password is wrong" });
   }
   //   console.log(req.session);
-  // session에 data를 넣는 과정
+  // session에 data를 넣는 과정 = session이 initialize(초기화,수정) 되는 부분
   req.session.loggedIn = true; //session의 object에 {loggedIn : true} 라는 key-value를 넣는 것
   req.session.user = user; // session object에 user라는 key에 DB user value를 넣음
 

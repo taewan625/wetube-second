@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-mongoose.connect("mongodb://127.0.0.1:27017/wetube2", {
+mongoose.connect(process.env.DB_URL, {
   // when warning coming that time write solution here
 });
 

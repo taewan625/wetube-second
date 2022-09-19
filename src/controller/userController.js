@@ -167,21 +167,44 @@ export const logout = (req, res) => {
 export const getEdit = (req, res) => {
   return res.render("edit-profile", { pageTitle: "Edit Profile" });
 };
+///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+////////////// CHALLENGE CODE /////////////////////////////////
 export const postEdit = async (req, res) => {
+  const pageTitle = "Edit Profile";
   const {
     session: {
       user: { _id },
     },
     body: { name, email, username, location },
   } = req;
-  // req.session object 안에 user의 정보가 있어서 id가 존재
+  const usernameExists = await UserModel.exists({ username });
+  const emailExists = await UserModel.exists({ email });
+  if (usernameExists && emailExists) {
+    return res.status(400).render("edit-profile", {
+      pageTitle,
+      errorMessage: "This username and email are already exists",
+    });
+  }
+  if (usernameExists) {
+    return res.status(400).render("edit-profile", {
+      pageTitle,
+      errorMessage: "This username is already exists",
+    });
+  }
+  if (emailExists) {
+    return res.status(400).render("edit-profile", {
+      pageTitle,
+      errorMessage: "This email is already exists",
+    });
+  }
+
   const updatedUser = await UserModel.findByIdAndUpdate(
     _id,
     { name, email, username, location },
-    { new: true } // new option이 존재하지 않으면 session에 초기 수정전의 data를 보내준다.
+    { new: true }
   );
-  // req.session.user = { ...req.session.user, name, email, username, location };
-  // ...req.session.user: raw data에서 edit한 내용을 덮어쓰는 것을 의미
   req.session.user = updatedUser;
   return res.redirect("/users/edit");
 };

@@ -1,4 +1,4 @@
-extends base
+extends ../base
 
 block content
     form(method="POST")
@@ -8,3 +8,6 @@ block content
         input(name="username", type="text", required, placeholder="username", value=loggedInUser.username)
         input(name="location", type="text", required, placeholder="location", value=loggedInUser.location)
         input(type="submit", value="Update profile")
+        if !loggedInUser.socialOnly
+            hr
+            a(href="change-password") change password &rarr;

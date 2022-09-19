@@ -1,8 +1,10 @@
 import UserModel from "../models/User";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
+import session from "express-session";
 
-export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
+export const getJoin = (req, res) =>
+  res.render("users/join", { pageTitle: "Join" });
 
 export const postJoin = async (req, res) => {
   const { name, email, username, password, conPassword, location } = req.body;
@@ -10,25 +12,25 @@ export const postJoin = async (req, res) => {
   const usernameExists = await UserModel.exists({ username });
   const emailExists = await UserModel.exists({ email });
   if (usernameExists && emailExists) {
-    return res.status(400).render("join", {
+    return res.status(400).render("users/join", {
       pageTitle,
       errorMessage: "This username and email are already exists",
     });
   }
   if (usernameExists) {
-    return res.status(400).render("join", {
+    return res.status(400).render("users/join", {
       pageTitle,
       errorMessage: "This username is already exists",
     });
   }
   if (emailExists) {
-    return res.status(400).render("join", {
+    return res.status(400).render("users/join", {
       pageTitle,
       errorMessage: "This email is already exists",
     });
   }
   if (password !== conPassword) {
-    return res.status(400).render("join", {
+    return res.status(400).render("users/join", {
       pageTitle,
       errorMessage: "This password isn't same.",
     });
@@ -43,28 +45,31 @@ export const postJoin = async (req, res) => {
     });
     return res.redirect("/login");
   } catch (error) {
-    res.status(404).render("join", { pageTitle, errorMessage: error._message });
+    res
+      .status(404)
+      .render("users/join", { pageTitle, errorMessage: error._message });
   }
 };
 
 export const getLogin = (req, res) =>
-  res.render("login", { pageTitle: "Log In" });
+  res.render("users/login", { pageTitle: "Log In" });
 
 export const postLogin = async (req, res) => {
   const { username, password } = req.body;
   const pageTitle = "Log in";
   const user = await UserModel.findOne({ username, socialOnly: false });
   if (!user) {
-    return res.status(400).render("login", {
+    return res.status(400).render("users/login", {
       pageTitle,
       errorMessage: "This ID isn't exists",
     });
   }
   const confirmPassword = await bcrypt.compare(password, user.password);
   if (!confirmPassword) {
-    return res
-      .status(400)
-      .render("login", { pageTitle, errorMessage: "This Password is wrong" });
+    return res.status(400).render("users/login", {
+      pageTitle,
+      errorMessage: "This Password is wrong",
+    });
   }
   //   console.log(req.session);
   // session에 data를 넣는 과정 = session이 initialize(초기화,수정) 되는 부분
@@ -165,12 +170,8 @@ export const logout = (req, res) => {
 };
 
 export const getEdit = (req, res) => {
-  return res.render("edit-profile", { pageTitle: "Edit Profile" });
+  return res.render("users/edit-profile", { pageTitle: "Edit Profile" });
 };
-///////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////
-////////////// CHALLENGE CODE /////////////////////////////////
 export const postEdit = async (req, res) => {
   const pageTitle = "Edit Profile";
   const {
@@ -182,19 +183,19 @@ export const postEdit = async (req, res) => {
   const usernameExists = await UserModel.exists({ username });
   const emailExists = await UserModel.exists({ email });
   if (usernameExists && emailExists) {
-    return res.status(400).render("edit-profile", {
+    return res.status(400).render("users/edit-profile", {
       pageTitle,
       errorMessage: "This username and email are already exists",
     });
   }
   if (usernameExists) {
-    return res.status(400).render("edit-profile", {
+    return res.status(400).render("users/edit-profile", {
       pageTitle,
       errorMessage: "This username is already exists",
     });
   }
   if (emailExists) {
-    return res.status(400).render("edit-profile", {
+    return res.status(400).render("users/edit-profile", {
       pageTitle,
       errorMessage: "This email is already exists",
     });
@@ -205,8 +206,44 @@ export const postEdit = async (req, res) => {
     { name, email, username, location },
     { new: true }
   );
-  req.session.user = updatedUser;
+  req.session.user = updatedUser; //sessionDB update
   return res.redirect("/users/edit");
+};
+
+export const getChangePassword = (req, res) => {
+  if (req.session.user.socialOnly) return res.redirect("/users/edit");
+  // render: wetube/views/FINDING -> wetube/views/users/FINDING | but "/users/change-password" -> wetube/views/FINDING/users/FINDING
+  return res.render("users/change-password", {
+    pageTitle: "change-password",
+  });
+};
+export const postChangePassword = async (req, res) => {
+  const pageTitle = "change-password";
+  const {
+    session: {
+      user: { _id, password },
+    },
+    body: { prePassword, newPassword, conPassword },
+  } = req;
+
+  const confirmPassword = await bcrypt.compare(prePassword, password);
+  if (!confirmPassword) {
+    return res.status(400).render("users/change-password", {
+      pageTitle,
+      errorMessage: "Current password is incorrect",
+    });
+  }
+  if (conPassword !== newPassword) {
+    return res.status(400).render("users/change-password", {
+      errorMessage: "password isn't match",
+      pageTitle,
+    });
+  }
+  const user = await UserModel.findByIdAndUpdate(_id);
+  user.password = newPassword;
+  await user.save(); // mongoose 문법으로 pw hash하기 위함
+  req.session.destroy(); // hacker session data 이용 방지 목적
+  return res.redirect("/login");
 };
 
 export const see = (req, res) => res.send("see");

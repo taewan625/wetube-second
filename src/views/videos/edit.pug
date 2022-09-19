@@ -1,4 +1,4 @@
-extends base.pug
+extends ../base.pug
 
 block content
   h4 Edit Video
@@ -6,4 +6,4 @@ block content
     input(name="title", placeholder="Video Title", value=video.title, required)
     input(name="description", placeholder="description", required, type="text",value=video.description)
     input(name="hashtags", placeholder="hashtags", required, type="text", value=video.hashtags.join())
-    button submit
+    input(type="submit", value="edit video")

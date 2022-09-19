@@ -10,7 +10,7 @@ export const watch = async (req, res) => {
   if (video === null) {
     return res.status(404).render("404", { pageTitle: "Wrong url" });
   } else {
-    return res.render("watch", { pageTitle: video.title, video });
+    return res.render("videos/watch", { pageTitle: video.title, video });
   }
 };
 export const getEdit = async (req, res) => {
@@ -19,7 +19,10 @@ export const getEdit = async (req, res) => {
   if (!video) {
     return res.status(404).render("404", { pageTitle: "Wrong url" });
   } else {
-    return res.render("edit", { pageTitle: `edit: ${video.title}`, video });
+    return res.render("videos/edit", {
+      pageTitle: `edit: ${video.title}`,
+      video,
+    });
   }
 };
 export const postEdit = async (req, res) => {
@@ -39,7 +42,7 @@ export const postEdit = async (req, res) => {
 };
 
 export const getUpload = (req, res) => {
-  return res.render("upload", { pageTitle: "upload video" });
+  return res.render("videos/upload", { pageTitle: "upload video" });
 };
 export const postUpload = async (req, res) => {
   const { title, description, hashtags } = req.body;
@@ -51,7 +54,7 @@ export const postUpload = async (req, res) => {
     });
     return res.redirect("/");
   } catch (error) {
-    return res.render("upload", {
+    return res.render("videos/upload", {
       pageTitle: "Upload Video",
       errorMessage: error._message,
     });

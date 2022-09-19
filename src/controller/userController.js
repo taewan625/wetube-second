@@ -137,31 +137,53 @@ export const finishGithubLogin = async (req, res) => {
     if (!emailObj) {
       return res.redirect("/login");
     }
-    const existingUser = await UserModel.findOne({ email: emailObj.email });
-    if (existingUser) {
-      req.session.loggedIn = true;
-      req.session.user = existingUser;
-      return res.redirect("/");
-    } else {
-      // need to make user data in db (db.users에 same email이 없을 때)
-      const user = await UserModel.create({
+    // mongodb에 github email과 same email user 존재 여부 확인
+    let user = await UserModel.findOne({ email: emailObj.email });
+    if (!user) {
+      user = await UserModel.create({
         name: userData.name,
         email: emailObj.email,
         username: userData.login,
+        avatar: userData.avatar_url,
         password: "",
         socialOnly: true,
         location: userData.location,
       });
-      req.session.loggedIn = true;
-      req.session.user = user;
-      return res.redirect("/");
     }
+    // need to make user data in db (db.users에 same email이 없을 때)
+    req.session.loggedIn = true;
+    req.session.user = user;
+    return res.redirect("/");
   } else {
     return res.redirect("/login");
   }
 };
+export const logout = (req, res) => {
+  // session 값만 없애야지 user data save 할 수 있고 다시 로그인 할 수 있다.
+  req.session.destroy();
+  return res.redirect("/");
+};
 
-export const edit = (req, res) => res.send("edit");
-export const remove = (req, res) => res.send("delete");
-export const logout = (req, res) => res.send("logout");
+export const getEdit = (req, res) => {
+  return res.render("edit-profile", { pageTitle: "Edit Profile" });
+};
+export const postEdit = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { name, email, username, location },
+  } = req;
+  // req.session object 안에 user의 정보가 있어서 id가 존재
+  const updatedUser = await UserModel.findByIdAndUpdate(
+    _id,
+    { name, email, username, location },
+    { new: true } // new option이 존재하지 않으면 session에 초기 수정전의 data를 보내준다.
+  );
+  // req.session.user = { ...req.session.user, name, email, username, location };
+  // ...req.session.user: raw data에서 edit한 내용을 덮어쓰는 것을 의미
+  req.session.user = updatedUser;
+  return res.redirect("/users/edit");
+};
+
 export const see = (req, res) => res.send("see");

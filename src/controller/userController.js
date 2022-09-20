@@ -172,16 +172,17 @@ export const logout = (req, res) => {
 export const getEdit = (req, res) => {
   return res.render("users/edit-profile", { pageTitle: "Edit Profile" });
 };
+
 export const postEdit = async (req, res) => {
   const pageTitle = "Edit Profile";
   const {
     session: {
-      user: { _id },
+      user: { _id, avatarUrl },
     },
     body: { name, email, username, location },
     file,
   } = req;
-  console.log(file);
+
   const usernameExists = await UserModel.exists(
     // 순서도 중요 : _id를 제외한 후 -> username 찾는다.
     { _id: { $nin: [_id] } },
@@ -213,7 +214,14 @@ export const postEdit = async (req, res) => {
 
   const updatedUser = await UserModel.findByIdAndUpdate(
     _id,
-    { name, email, username, location },
+    {
+      // if문 없이 avatarUrl:file.path하면 file upload안할 시 .path를 찾을 수 없어서 error 생김
+      avatarUrl: file ? file.path : avatarUrl,
+      name,
+      email,
+      username,
+      location,
+    },
     { new: true }
   );
   req.session.user = updatedUser; //sessionDB update

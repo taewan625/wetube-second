@@ -45,6 +45,8 @@ app.use(
 
 //router
 app.use(localsMiddleware);
+app.use("/uploads", express.static("uploads"));
+// static은 전역적으로 data를 볼 수 있는 것
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);

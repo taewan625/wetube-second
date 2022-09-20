@@ -1,6 +1,7 @@
 extends ../base
 
 block content
+    img(src="/" +loggedInUser.avatarUrl, width="50",height="50")
     form(method="POST", enctype="multipart/form-data")
         span=errorMessage
         label(for="avatar") Avatar 

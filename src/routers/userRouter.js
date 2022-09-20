@@ -11,9 +11,9 @@ import {
 } from "../controller/userController";
 
 import {
+  avatarUpload,
   protectorMiddleware,
   publicOnlyMiddleware,
-  uploadFiles,
 } from "../middlewares";
 
 const userRouter = express.Router();
@@ -22,7 +22,7 @@ userRouter
   .route("/edit")
   .all(protectorMiddleware)
   .get(getEdit)
-  .post(uploadFiles.single("avatar"), postEdit);
+  .post(avatarUpload.single("avatar"), postEdit);
 //req.file is the `avatar` file
 userRouter
   .route("/change-password")

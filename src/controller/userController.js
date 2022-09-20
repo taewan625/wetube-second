@@ -179,9 +179,19 @@ export const postEdit = async (req, res) => {
       user: { _id },
     },
     body: { name, email, username, location },
+    file,
   } = req;
-  const usernameExists = await UserModel.exists({ username });
-  const emailExists = await UserModel.exists({ email });
+  console.log(file);
+  const usernameExists = await UserModel.exists(
+    // 순서도 중요 : _id를 제외한 후 -> username 찾는다.
+    { _id: { $nin: [_id] } },
+    { username }
+  );
+  const emailExists = await UserModel.exists(
+    { _id: { $nin: [_id] } },
+    { email }
+  );
+
   if (usernameExists && emailExists) {
     return res.status(400).render("users/edit-profile", {
       pageTitle,

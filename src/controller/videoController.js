@@ -1,16 +1,24 @@
 import VideoModel from "../models/Video";
+import UserModel from "../models/User";
 
 export const home = async (req, res) => {
   const videos = await VideoModel.find({}).sort({ createdAt: "desc" });
   return res.render("home", { pageTitle: "Home", videos });
 };
+
 export const watch = async (req, res) => {
   const { id } = req.params;
   const video = await VideoModel.findById(id);
+  // usermodel username video line에 넣기 시작 과정
+  const createdOwner = await UserModel.findById(video.owner);
   if (video === null) {
     return res.status(404).render("404", { pageTitle: "Wrong url" });
   } else {
-    return res.render("videos/watch", { pageTitle: video.title, video });
+    return res.render("videos/watch", {
+      pageTitle: video.title,
+      video,
+      createdOwner,
+    });
   }
 };
 export const getEdit = async (req, res) => {
@@ -45,6 +53,9 @@ export const getUpload = (req, res) => {
   return res.render("videos/upload", { pageTitle: "upload video" });
 };
 export const postUpload = async (req, res) => {
+  const {
+    user: { _id },
+  } = req.session;
   const { path: fileUrl } = req.file;
   const { title, description, hashtags } = req.body;
   try {
@@ -52,6 +63,7 @@ export const postUpload = async (req, res) => {
       title,
       description,
       fileUrl,
+      owner: _id,
       hashtags: VideoModel.formatHashtags(hashtags),
     });
     return res.redirect("/");

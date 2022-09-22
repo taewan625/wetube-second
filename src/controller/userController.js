@@ -1,7 +1,6 @@
 import UserModel from "../models/User";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
-import session from "express-session";
 
 export const getJoin = (req, res) =>
   res.render("users/join", { pageTitle: "Join" });
@@ -264,4 +263,17 @@ export const postChangePassword = async (req, res) => {
   return res.redirect("/login");
 };
 
-export const see = (req, res) => res.send("see");
+export const see = async (req, res) => {
+  const { id } = req.params;
+  const user = await UserModel.findById(id);
+  try {
+    return res.render("users/profile", {
+      pageTitle: `${user.name}'s profile`,
+      user,
+    });
+  } catch (err) {
+    return res
+      .status(404)
+      .render("404", { pageTitle: "404", errorMessage: err._message });
+  }
+};

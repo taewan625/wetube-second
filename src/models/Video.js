@@ -16,6 +16,12 @@ const videoSchema = new mongoose.Schema({
     views: { type: Number, default: 0 },
     rating: { type: Number, default: 0 },
   },
+  // videomodel에 user _id: ObjectId를 연결시키기 위함
+  owner: {
+    type: mongoose.Schema.Types.ObjectId, // ObjectId란 Primitive type이 아니므로 mongoose reference type 가지고 옴. https://mongoosejs.com/docs/api.html#schema_Schema-Types
+    required: true,
+    ref: "UserModelForConnectVideoModel", // user의 model명을 reference로 두고 objectid를 받아오는 것
+  },
 });
 
 // middleware; update, upload하기전에 미리 무엇인가를 중간 점검 하고 싶을 때, hashtag 점검이라던지, user sign 시 존재하는 id인지

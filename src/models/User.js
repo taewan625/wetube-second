@@ -17,6 +17,6 @@ userSchema.pre("save", async function () {
   this.password = await bcrypt.hash(this.password, 5);
 });
 
-const UserModel = mongoose.model("User", userSchema);
+const UserModel = mongoose.model("UserModelForConnectVideoModel", userSchema);
 
 export default UserModel;

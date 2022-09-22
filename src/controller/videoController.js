@@ -22,22 +22,30 @@ export const watch = async (req, res) => {
 };
 export const getEdit = async (req, res) => {
   const { id } = req.params;
+  const { _id } = req.session.user;
+
   const video = await VideoModel.findById(id); // edit.pug에서 videoDB의 object를 이용하므로 findById가 적합
   if (!video) {
     return res.status(404).render("404", { pageTitle: "Wrong url" });
-  } else {
-    return res.render("videos/edit", {
-      pageTitle: `edit: ${video.title}`,
-      video,
-    });
   }
+  if (String(video.owner) !== String(_id)) {
+    return res.status(403).redirect("/");
+  }
+  return res.render("videos/edit", {
+    pageTitle: `edit: ${video.title}`,
+    video,
+  });
 };
 export const postEdit = async (req, res) => {
   const { id } = req.params;
   const { title, description, hashtags } = req.body;
+  const { _id } = req.session.user;
   const video = await VideoModel.exists({ _id: id }); // Video db의 object의 유무(true, false)만 필요하지 object자체가 필요하지는 않음
   if (!video) {
     return res.status(400).render("404", { pageTitle: "Wrong url" });
+  }
+  if (String(video.owner) !== String(_id)) {
+    return res.status(403).redirect("/");
   }
   // mongoose method 방법
   await VideoModel.findByIdAndUpdate(id, {
@@ -81,6 +89,14 @@ export const postUpload = async (req, res) => {
 
 export const deleteVideo = async (req, res) => {
   const { id } = req.params;
+  const { _id } = req.session.user;
+  const video = await VideoModel.findById(id);
+  if (!video) {
+    return res.status(400).render("404", { pageTitle: "Wrong url" });
+  }
+  if (String(video.owner) !== String(_id)) {
+    return res.status(403).redirect("/");
+  }
   await VideoModel.findByIdAndDelete(id);
   return res.redirect("/");
 };

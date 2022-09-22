@@ -15,7 +15,10 @@ const userSchema = new mongoose.Schema({
 // this: userSchema를 의미한다
 
 userSchema.pre("save", async function () {
-  this.password = await bcrypt.hash(this.password, 5);
+  // this func중에서 password가 수정이될 때 작동하는 hash * this=UserModel
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 5);
+  }
 });
 
 const UserModel = mongoose.model("UserModelName", userSchema);

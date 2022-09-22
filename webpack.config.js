@@ -4,6 +4,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
   // webpack compile-file이 empty file로 나오는 경우
   mode: "development",
+  // node.js의 nodemon같은 것, server가 안꺼짐
+  watch: true,
   plugins: [
     new MiniCssExtractPlugin({
       filename: "css/styles.css",
@@ -14,6 +16,8 @@ module.exports = {
   output: {
     filename: "js/main.js",
     path: path.resolve(__dirname, "assets"),
+    //assets file을 clean하고 새 파일로 저장해줌. 이것은 terminal을 재시작할 때만 작동
+    clean: true,
   },
   // some kind of latest code need 호환성. for that kind of problem, we use [css or js ]-loader
   // 1) js, babel-loader

@@ -7,7 +7,7 @@
     "url": "git+https://github.com/taewan625/wetube-second.git"
   },
   "scripts": {
-    "dev:server": "nodemon --exec babel-node src/init.js",
+    "dev:server": "nodemon babel-node src/init.js",
     "dev:assets": "webpack --config webpack.config.js"
   },
   "author": "",

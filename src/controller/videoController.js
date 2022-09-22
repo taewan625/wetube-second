@@ -40,10 +40,12 @@ export const postEdit = async (req, res) => {
   const { id } = req.params;
   const { title, description, hashtags } = req.body;
   const { _id } = req.session.user;
-  const video = await VideoModel.exists({ _id: id }); // Video db의 object의 유무(true, false)만 필요하지 object자체가 필요하지는 않음
+  const video = await VideoModel.findById({ _id: id }); // findById로 바꾸어줘야만 video 수정시 작동함
   if (!video) {
     return res.status(400).render("404", { pageTitle: "Wrong url" });
   }
+  console.log(video);
+  console.log(video.owner, _id);
   if (String(video.owner) !== String(_id)) {
     return res.status(403).redirect("/");
   }
@@ -91,6 +93,7 @@ export const deleteVideo = async (req, res) => {
   const { id } = req.params;
   const { _id } = req.session.user;
   const video = await VideoModel.findById(id);
+  const user = await UserModel.findById(_id);
   if (!video) {
     return res.status(400).render("404", { pageTitle: "Wrong url" });
   }
@@ -98,6 +101,8 @@ export const deleteVideo = async (req, res) => {
     return res.status(403).redirect("/");
   }
   await VideoModel.findByIdAndDelete(id);
+  user.myVideos.splice(user.myVideos.indexOf(id), 2); // method: indexOf(), spliac(array,deletecount,addsomthing)
+  user.save(); // save 해주어야지 updata가 된다.
   return res.redirect("/");
 };
 

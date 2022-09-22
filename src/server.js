@@ -45,8 +45,12 @@ app.use(
 
 //router
 app.use(localsMiddleware);
-app.use("/uploads", express.static("uploads"));
+
+// folder안의 data들을 url상에서 접근할 수 있도록 함
 // static은 전역적으로 data를 볼 수 있는 것
+app.use("/uploads", express.static("uploads"));
+app.use("/assets", express.static("assets"));
+
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);

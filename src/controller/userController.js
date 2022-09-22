@@ -266,13 +266,11 @@ export const postChangePassword = async (req, res) => {
 
 export const see = async (req, res) => {
   const { id } = req.params;
-  const user = await UserModel.findById(id); // myVideo는 create user할 때 keyname, 이 key안에 ref 존재
-  const videos = await VideoModel.find({ owner: user._id });
+  const user = await UserModel.findById(id).populate("myVideos"); // myVideo는 create user할 때 keyname, 이 key안에 ref 존재
   try {
     return res.render("users/profile", {
       pageTitle: `${user.name}'s profile`,
       user,
-      videos,
     });
   } catch (err) {
     return res

@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String },
   location: { type: String },
-  myVideo: { type: mongoose.Schema.Types.ObjectId, ref: "VideoModelname" },
+  myVideos: [{ type: mongoose.Schema.Types.ObjectId, ref: "VideoModelname" }], // 여러개라서 array
 });
 
 // this: userSchema를 의미한다

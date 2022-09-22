@@ -1,3 +1,4 @@
+import UserModel from "../models/User";
 import VideoModel from "../models/Video";
 
 export const home = async (req, res) => {
@@ -50,6 +51,7 @@ export const postEdit = async (req, res) => {
 export const getUpload = (req, res) => {
   return res.render("videos/upload", { pageTitle: "upload video" });
 };
+
 export const postUpload = async (req, res) => {
   const {
     user: { _id },
@@ -57,13 +59,17 @@ export const postUpload = async (req, res) => {
   const { path: fileUrl } = req.file;
   const { title, description, hashtags } = req.body;
   try {
-    await VideoModel.create({
+    const newVideo = await VideoModel.create({
       title,
       description,
       fileUrl,
       owner: _id,
       hashtags: VideoModel.formatHashtags(hashtags),
     });
+    // video자체를 usermodel속으로 넣으러고 함 -> 하지만 User.js에서 조건으로 objectId만 넣기로 해서 db상에서 myvideo에는 array만 존재하게 됨
+    const user = await UserModel.findById(_id);
+    user.myVideos.push(newVideo); // usermodel의 myvideo는 array이다.
+    user.save();
     return res.redirect("/");
   } catch (error) {
     return res.render("videos/upload", {

@@ -1,23 +1,21 @@
 import VideoModel from "../models/Video";
-import UserModel from "../models/User";
 
 export const home = async (req, res) => {
   const videos = await VideoModel.find({}).sort({ createdAt: "desc" });
   return res.render("home", { pageTitle: "Home", videos });
 };
 
+// mongoose의 populate: ref가 되어있는 key를 populate안에 넣어주면 key의 실제 존재 db로 찾아가서 그것의 모든 object를 가지고 온다.
 export const watch = async (req, res) => {
   const { id } = req.params;
-  const video = await VideoModel.findById(id);
-  // usermodel username video line에 넣기 시작 과정
-  const createdOwner = await UserModel.findById(video.owner);
+  const video = await VideoModel.findById(id).populate("owner");
+  // console.log(video); // users data 다 가지고 옴
   if (video === null) {
     return res.status(404).render("404", { pageTitle: "Wrong url" });
   } else {
     return res.render("videos/watch", {
       pageTitle: video.title,
       video,
-      createdOwner,
     });
   }
 };

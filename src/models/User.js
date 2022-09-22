@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String },
   location: { type: String },
+  myVideo: { type: mongoose.Schema.Types.ObjectId, ref: "VideoModelname" },
 });
 
 // this: userSchema를 의미한다
@@ -17,6 +18,6 @@ userSchema.pre("save", async function () {
   this.password = await bcrypt.hash(this.password, 5);
 });
 
-const UserModel = mongoose.model("UserModelForConnectVideoModel", userSchema);
+const UserModel = mongoose.model("UserModelName", userSchema);
 
 export default UserModel;

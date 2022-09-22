@@ -1,4 +1,8 @@
 extends ../base
+include ../mixins/video
 
 block content
-    p user!!!!!
+    each video in videos
+        +videoMixin(video)
+    else
+        li sorry nothing found.

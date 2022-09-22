@@ -1,6 +1,7 @@
 import UserModel from "../models/User";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
+import VideoModel from "../models/Video";
 
 export const getJoin = (req, res) =>
   res.render("users/join", { pageTitle: "Join" });
@@ -265,11 +266,13 @@ export const postChangePassword = async (req, res) => {
 
 export const see = async (req, res) => {
   const { id } = req.params;
-  const user = await UserModel.findById(id);
+  const user = await UserModel.findById(id); // myVideo는 create user할 때 keyname, 이 key안에 ref 존재
+  const videos = await VideoModel.find({ owner: user._id });
   try {
     return res.render("users/profile", {
       pageTitle: `${user.name}'s profile`,
       user,
+      videos,
     });
   } catch (err) {
     return res

@@ -20,7 +20,7 @@ const videoSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId, // ObjectId란 Primitive type이 아니므로 mongoose reference type 가지고 옴. https://mongoosejs.com/docs/api.html#schema_Schema-Types
     required: true,
-    ref: "UserModelForConnectVideoModel", // user의 model명을 reference로 두고 objectid를 받아오는 것
+    ref: "UserModelName", // user의 model명을 reference로 두고 objectid를 받아오는 것
   },
 });
 
@@ -41,6 +41,6 @@ videoSchema.static("formatHashtags", function (hashtags) {
     .map((word) => (word.startsWith("#") ? word : `#${word}`));
 });
 
-const VideoModel = mongoose.model("Video", videoSchema);
+const VideoModel = mongoose.model("VideoModelname", videoSchema);
 
 export default VideoModel;

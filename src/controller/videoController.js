@@ -2,7 +2,9 @@ import UserModel from "../models/User";
 import VideoModel from "../models/Video";
 
 export const home = async (req, res) => {
-  const videos = await VideoModel.find({}).sort({ createdAt: "desc" });
+  const videos = await VideoModel.find({})
+    .sort({ createdAt: "desc" })
+    .populate("owner");
   return res.render("home", { pageTitle: "Home", videos });
 };
 
@@ -117,7 +119,7 @@ export const search = async (req, res) => {
         $regex: new RegExp(keyword, "i"), // mongodb의 문법이다!!
         // $gt
       },
-    });
+    }).populate("owner");
   }
   res.render("search", { pageTitle: "search", videos });
 };

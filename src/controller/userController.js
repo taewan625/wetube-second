@@ -266,7 +266,16 @@ export const postChangePassword = async (req, res) => {
 
 export const see = async (req, res) => {
   const { id } = req.params;
-  const user = await UserModel.findById(id).populate("myVideos"); // myVideo는 create user할 때 keyname, 이 key안에 ref 존재
+  // double populate 방법
+  const user = await UserModel.findById(id).populate({
+    // 1. user profile에서 보여줘야하는 user의 videoDB 정보 가지고 오기
+    path: "myVideos",
+    // 2. mixin에 사용되야하는 userDB정보를 myvideo의 owner를 통해서 가지고 오기
+    populate: {
+      path: "owner",
+      model: "UserModelName",
+    },
+  }); // myVideo는 create user할 때 keyname, 이 key안에 ref 존재
   try {
     return res.render("users/profile", {
       pageTitle: `${user.name}'s profile`,

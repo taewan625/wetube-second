@@ -3,7 +3,8 @@ include mixins/video
 //- mixin data를 넣어줘야함
 
 block content
-  each video in videos
-    +videoMixin(video)
-  else
-    li sorry nothing found.
+  div.video-grid
+    each video in videos
+      +videoMixin(video)
+    else
+      span.empty__message No videos found.

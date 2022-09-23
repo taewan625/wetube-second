@@ -1,0 +1,61 @@
+header {
+  position: relative;
+  padding: 20px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .header__logo {
+    display: flex;
+    align-items: center;
+    z-index: 99;
+    font-size: 38px;
+    span {
+      color: white;
+      font-size: 20px;
+    }
+    i {
+      margin-right: 5px;
+    }
+  }
+  .header__logo--bg {
+    position: absolute;
+    left: 60px;
+    height: 20px;
+    width: 20px;
+    background-color: white;
+  }
+  ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    li {
+      margin-left: 30px;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase; // Capital
+    }
+    i {
+      font-size: 16px;
+    }
+  }
+  .header__btn {
+    background-color: white;
+    color: $bg;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  .header__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+}
+.fa-youtube,
+.header__logo--span {
+  background: -webkit-linear-gradient(blue, gold);
+  -webkit-background-clip: text; // property가 적용 범위 설정
+  -webkit-text-fill-color: transparent; // 설정하지 않을 시 부모 속성 색상들어감
+  font: {
+    size: 38px;
+  }
+}

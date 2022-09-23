@@ -1,14 +1,23 @@
-extends ../base.pug
+extends ../base
 
 block content
-    video(src="/"+video.fileUrl, controls) 
-    div
-        p=video.description
-        small=video.createdAt
-        br
-        small uploaded by 
-            a(href=`/users/${video.owner._id}`) #{video.owner.username}
-    if String(video.owner._id) === String(loggedInUser._id)
-        a(href=`${video.id}/edit`) Edit video &rarr;
-        br
-        a(href=`${video.id}/delete`) Delete video &rarr;
+    video(src="/"+video.fileUrl, controls)
+    div 
+        button#play Play 
+        button#mute Mute 
+        span#time 00:00/00:00
+        input(type="range", step="0.1",value="0.5", min="0", max="1")#volume
+    //- 원래 이런 주소가 없는데 server.js의 express.static으로 folder에 연결이 가능해지는 것
+    //-
+        div
+            p=video.description
+            small=video.createdAt
+            br
+            small uploaded by 
+                a(href=`/users/${video.owner._id}`) #{video.owner.username}
+        if String(video.owner._id) === String(loggedInUser._id)
+            a(href=`${video.id}/edit`) Edit video &rarr;
+            br
+            a(href=`${video.id}/delete`) Delete video &rarr;
+block scripts
+    script(src="/assets/js/videoPlayer.js")

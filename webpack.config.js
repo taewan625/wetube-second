@@ -1,5 +1,5 @@
-const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const path = require("path");
 
 module.exports = {
   // webpack compile-file이 empty file로 나오는 경우
@@ -12,9 +12,12 @@ module.exports = {
     }),
   ],
   // entry -> webpack.config.js -> output || to change old code for every browser
-  entry: "./src/client/js/main.js",
+  entry: {
+    main: "./src/client/js/main.js",
+    videoPlayer: "./src/client/js/videoPlayer.js",
+  },
   output: {
-    filename: "js/main.js",
+    filename: "js/[name].js", // webpack의 변수 [name]: entry의 main, videoPlayer를 의미함
     path: path.resolve(__dirname, "assets"),
     //assets file을 clean하고 새 파일로 저장해줌. 이것은 terminal을 재시작할 때만 작동
     clean: true,

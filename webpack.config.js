@@ -2,6 +2,11 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 
 module.exports = {
+  // entry -> webpack.config.js -> output || to change old code for every browser
+  entry: {
+    main: "./src/client/js/main.js",
+    videoPlayer: "./src/client/js/videoPlayer.js",
+  },
   // webpack compile-file이 empty file로 나오는 경우
   mode: "development",
   // node.js의 nodemon같은 것, server가 안꺼짐
@@ -11,11 +16,6 @@ module.exports = {
       filename: "css/styles.css",
     }),
   ],
-  // entry -> webpack.config.js -> output || to change old code for every browser
-  entry: {
-    main: "./src/client/js/main.js",
-    videoPlayer: "./src/client/js/videoPlayer.js",
-  },
   output: {
     filename: "js/[name].js", // webpack의 변수 [name]: entry의 main, videoPlayer를 의미함
     path: path.resolve(__dirname, "assets"),
@@ -31,7 +31,7 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-env"],
+            presets: [["@babel/preset-env", { targets: "defaults" }]],
           },
         },
       },

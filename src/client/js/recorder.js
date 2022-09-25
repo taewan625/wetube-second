@@ -3,8 +3,15 @@ const video = document.getElementById("preview");
 
 let stream;
 let recorder;
+let videoFile;
 
-const handleDownload = () => {};
+const handleDownload = () => {
+  const a = document.createElement("a");
+  a.href = videoFile;
+  a.download = "Record Video File Name.webm"; // download 시 default name
+  document.body.appendChild(a);
+  a.click(); // download 접근
+};
 
 const handleStop = () => {
   startBtn.innerText = "Download Recording";
@@ -24,7 +31,7 @@ const handleStart = () => {
   recorder = new MediaRecorder(stream);
   recorder.ondataavailable = (event) => {
     // createObjectURL은 browser상의 memory에사만 사용가능한 URL을 만드는 것
-    const videoFile = URL.createObjectURL(event.data);
+    videoFile = URL.createObjectURL(event.data);
     video.srcObject = null;
     video.src = videoFile;
     video.loop = true;

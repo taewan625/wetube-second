@@ -6,6 +6,7 @@ module.exports = {
   entry: {
     main: "./src/client/js/main.js",
     videoPlayer: "./src/client/js/videoPlayer.js",
+    recorder: "./src/client/js/recorder.js",
   },
   // webpack compile-file이 empty file로 나오는 경우
   mode: "development",

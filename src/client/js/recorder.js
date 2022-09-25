@@ -8,7 +8,7 @@ let videoFile;
 const handleDownload = () => {
   const a = document.createElement("a");
   a.href = videoFile;
-  a.download = "Record Video File Name.webm"; // download 시 default name
+  a.download = "Record Video File Name.webm"; // download 시 default name + user가 link url로 넘어가는 것이 아니라 download하도록 설정이 변경
   document.body.appendChild(a);
   a.click(); // download 접근
 };
@@ -27,14 +27,15 @@ const handleStart = () => {
   startBtn.removeEventListener("click", handleStart);
   startBtn.addEventListener("click", handleStop);
 
+  recorder = new MediaRecorder(stream, { mimeType: "video/webm" });
+
   // media recorder start와 stop은 작동되지만 기록은 사라지게 된다. 하지만 mediaRecorder를 이용해야지 record data가 저장이 된다.
-  recorder = new MediaRecorder(stream);
   recorder.ondataavailable = (event) => {
     // createObjectURL은 browser상의 memory에사만 사용가능한 URL을 만드는 것
     videoFile = URL.createObjectURL(event.data);
     video.srcObject = null;
     video.src = videoFile;
-    video.loop = true;
+    // video.loop = true;
     video.play();
   };
   recorder.start();

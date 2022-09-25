@@ -44,6 +44,13 @@ app.use(
 //   });
 // });
 
+//ffmpeg error solve
+app.use((req, res, next) => {
+  res.header("Cross-Origin-Embedder-Policy", "require-corp");
+  res.header("Cross-Origin-Opener-Policy", "same-origin");
+  next();
+});
+
 //router
 app.use(localsMiddleware);
 

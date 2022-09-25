@@ -1,3 +1,4 @@
+import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
 const startBtn = document.getElementById("startBtn");
 const video = document.getElementById("preview");
 
@@ -5,10 +6,18 @@ let stream;
 let recorder;
 let videoFile;
 
-const handleDownload = () => {
+const handleDownload = async () => {
+  const ffmpeg = createFFmpeg({ log: true });
+  // 상대방의 computer를 이용해서 현재 내 웹사이트에서 ffmpeg progrem을 load를 해야하므로 progrem이 무거우면 느려질수있으므로 load 필요
+  await ffmpeg.load();
+  // 현재 webassembly를 이용중이고 이제부터 webassembly라는 가상환경속에 mp4 file을 만드는 것이다.
+  ffmpeg.FS("writeFile", "recording.webm", await fetchFile(videoFile));
+  // webassembly FS(파일생성한다는 명령어, upload할 file NAME, binary data function 주기)
+  await ffmpeg.run("-i", "recording.webm", "-r", "60", "output.mp4"); // (input -> file -> output) # this is ffmpeg console command
+
   const a = document.createElement("a");
-  a.href = videoFile;
-  a.download = "Record Video File Name.webm"; // download 시 default name + user가 link url로 넘어가는 것이 아니라 download하도록 설정이 변경
+  a.href = videoFile; // Blob = (Binary Large Object)
+  a.download = "RecordName.webm"; // download 시 default name + user가 link url로 넘어가는 것이 아니라 download하도록 설정이 변경
   document.body.appendChild(a);
   a.click(); // download 접근
 };
@@ -33,6 +42,7 @@ const handleStart = () => {
   recorder.ondataavailable = (event) => {
     // createObjectURL은 browser상의 memory에사만 사용가능한 URL을 만드는 것
     videoFile = URL.createObjectURL(event.data);
+    console.log(videoFile);
     video.srcObject = null;
     video.src = videoFile;
     // video.loop = true;

@@ -15,9 +15,17 @@ const handleDownload = async () => {
   // webassembly FS(파일생성한다는 명령어, upload할 file NAME, binary data function 주기)
   await ffmpeg.run("-i", "recording.webm", "-r", "60", "output.mp4"); // (input -> file -> output) # this is ffmpeg console command
 
+  const mp4File = ffmpeg.FS("readFile", "output.mp4");
+  // console.log(mp4File);
+  // console.log(mp4File.buffer); //binary data를 사용하기위한 조건이 buffer
+
+  const mp4Blob = new Blob([mp4File.buffer], { type: "video/mp4" });
+
+  const mp4URL = URL.createObjectURL(mp4Blob);
+
   const a = document.createElement("a");
-  a.href = videoFile; // Blob = (Binary Large Object)
-  a.download = "RecordName.webm"; // download 시 default name + user가 link url로 넘어가는 것이 아니라 download하도록 설정이 변경
+  a.href = mp4URL; // Blob = (Binary Large Object)
+  a.download = "MyRecording.mp4"; // download 시 default name + user가 link url로 넘어가는 것이 아니라 download하도록 설정이 변경
   document.body.appendChild(a);
   a.click(); // download 접근
 };
@@ -41,8 +49,8 @@ const handleStart = () => {
   // media recorder start와 stop은 작동되지만 기록은 사라지게 된다. 하지만 mediaRecorder를 이용해야지 record data가 저장이 된다.
   recorder.ondataavailable = (event) => {
     // createObjectURL은 browser상의 memory에사만 사용가능한 URL을 만드는 것
-    videoFile = URL.createObjectURL(event.data);
-    console.log(videoFile);
+    videoFile = URL.createObjectURL(event.data); //=blob
+    // console.log(videoFile);
     video.srcObject = null;
     video.src = videoFile;
     // video.loop = true;

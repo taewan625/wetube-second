@@ -4,10 +4,12 @@ const video = document.getElementById("preview");
 let stream;
 let recorder;
 
+const handleDownload = () => {};
+
 const handleStop = () => {
-  startBtn.innerText = "Start Recording";
+  startBtn.innerText = "Download Recording";
   startBtn.removeEventListener("click", handleStop);
-  startBtn.addEventListener("click", handleStart);
+  startBtn.addEventListener("click", handleDownload);
 
   recorder.stop();
 };
@@ -20,17 +22,15 @@ const handleStart = () => {
 
   // media recorder start와 stop은 작동되지만 기록은 사라지게 된다. 하지만 mediaRecorder를 이용해야지 record data가 저장이 된다.
   recorder = new MediaRecorder(stream);
-  //   console.log(recorder);
   recorder.ondataavailable = (event) => {
-    // console.log("recording done");
-    // console.log(event);
-    console.log(event.data);
     // createObjectURL은 browser상의 memory에사만 사용가능한 URL을 만드는 것
-    const video = URL.createObjectURL();
-    console.log(video);
+    const videoFile = URL.createObjectURL(event.data);
+    video.srcObject = null;
+    video.src = videoFile;
+    video.loop = true;
+    video.play();
   };
   recorder.start();
-  //   console.log(recorder);
 };
 
 // video record 전에 video가 작동하는지 미리보기

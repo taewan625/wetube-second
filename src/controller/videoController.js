@@ -123,3 +123,17 @@ export const search = async (req, res) => {
   }
   res.render("search", { pageTitle: "search", videos });
 };
+
+// frontEnd에서 이 route(URL)을 이동 없이 적용하기 위함. form없이 post & route 하기 ## rendering이 따로 없음
+// status는 상태코드로 현재 network가 이런상태이고 그 다음에 이걸 작동한다는 return값을 받아야한다. ex) status(200).render()or redirect()
+// 그러지않으면 network가 pendding 상태로 남아있게 된다. 그래서 status 대신 sendStatus를 사용해서 연결을 끝난다.
+export const registerView = async (req, res) => {
+  const { id } = req.params;
+  const video = await VideoModel.findById(id);
+  if (!video) {
+    return res.sendStatus(404);
+  }
+  video.meta.views = video.meta.views + 1;
+  await video.save();
+  return res.sendStatus(200);
+};

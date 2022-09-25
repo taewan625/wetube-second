@@ -15,19 +15,36 @@ const handleDownload = async () => {
   // webassembly FS(파일생성한다는 명령어, upload할 file NAME, binary data function 주기)
   await ffmpeg.run("-i", "recording.webm", "-r", "60", "output.mp4"); // (input -> file -> output) # this is ffmpeg console command
 
+  await ffmpeg.run(
+    "-i",
+    "recording.webm",
+    "-ss",
+    "00:00:01",
+    "-frames:v",
+    "1",
+    "thumbnail.jpg"
+  );
   const mp4File = ffmpeg.FS("readFile", "output.mp4");
+  const thumbFile = ffmpeg.FS("readFile", "thumbnail.jpg");
   // console.log(mp4File);
   // console.log(mp4File.buffer); //binary data를 사용하기위한 조건이 buffer
 
   const mp4Blob = new Blob([mp4File.buffer], { type: "video/mp4" });
+  const thumbBlob = new Blob([thumbFile.buffer], { type: "image/jpg" });
 
   const mp4URL = URL.createObjectURL(mp4Blob);
+  const thumbURL = URL.createObjectURL(thumbBlob);
+  const videoA = document.createElement("a");
+  videoA.href = mp4URL; // Blob = (Binary Large Object)
+  videoA.download = "MyRecording.mp4"; // download 시 default name + user가 link url로 넘어가는 것이 아니라 download하도록 설정이 변경
+  document.body.appendChild(videoA);
+  videoA.click(); // download 접근
 
-  const a = document.createElement("a");
-  a.href = mp4URL; // Blob = (Binary Large Object)
-  a.download = "MyRecording.mp4"; // download 시 default name + user가 link url로 넘어가는 것이 아니라 download하도록 설정이 변경
-  document.body.appendChild(a);
-  a.click(); // download 접근
+  const thumbA = document.createElement("a");
+  thumbA.href = thumbURL; // Blob = (Binary Large Object)
+  thumbA.download = "MyThumbnail.jpg"; // download 시 default name + user가 link url로 넘어가는 것이 아니라 download하도록 설정이 변경
+  document.body.appendChild(thumbA);
+  thumbA.click(); // download 접근
 };
 
 const handleStop = () => {

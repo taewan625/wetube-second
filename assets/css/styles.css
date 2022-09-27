@@ -259,8 +259,7 @@ form:not(.search__form) {
   border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
-input:not(input[type=range]),
-input[type=submit] {
+input:not(input[type=range]) {
   all: unset;
   padding: 15px 20px;
   border-radius: 15px;
@@ -270,8 +269,7 @@ input[type=submit] {
   font-size: 16px;
   width: 90%;
 }
-input:not(input[type=range])::placeholder,
-input[type=submit]::placeholder {
+input:not(input[type=range])::placeholder {
   color: rgba(255, 255, 255, 0.4);
 }
 
@@ -281,10 +279,20 @@ input[type=submit],
   border: 1px solid #5f5f5f;
   border-radius: 15px;
   padding: 15px 20px;
-  background: linear-gradient(#fe3933, #f10901);
+  background: linear-gradient(#fe3933, #f10901) !important;
   text-align: center;
   cursor: pointer;
   display: block;
+  border: none;
+}
+input[type=submit]:focus,
+.social__btn:focus {
+  outline: none;
+}
+input[type=submit]:disabled,
+.social__btn:disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .social-login {
@@ -403,6 +411,20 @@ input[type=submit],
   font-size: 18px;
   text-align: center;
   cursor: pointer;
+}
+
+.upload__container {
+  width: 100%;
+}
+.upload__container .upload__video {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.upload__container .upload__video video {
+  max-width: 100%;
+  margin-bottom: 10px;
 }
 
 a {

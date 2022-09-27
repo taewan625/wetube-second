@@ -1,19 +1,20 @@
 extends ../base.pug
 block content
-    div
-        video#preview
-        button#actionBtn Start recording
-    if errorMessage
-        span=errorMessage
-    form(method="post", enctype="multipart/form-data")
-        label(for="video") Video File 
-        input(type="file", accept="video/*", required, id="video", name="video")
-        label(for="thumb") Thumbnail File 
-        input(type="file", accept="image/*", required, id="thumb", name="thumb")
-        input(name="title", placeholder="title", required, type="text")
-        input(name="description", placeholder="description", required, type="text")
-        input(name="hashtags", placeholder="hashtags", required, type="text")
-        input(type="submit", value="upload")
+  div.upload__container
+        div.upload__video
+            video#preview
+            button#actionBtn.social__btn Start Recording
+        if errorMessage
+            span=errorMessage
+        form(method="post", enctype="multipart/form-data")
+            label(for="video") Video File 
+            input(type="file", accept="video/*", required, id="video", name="video")
+            label(for="thumb") Thumbnail File 
+            input(type="file", accept="image/*", required, id="thumb", name="thumb")
+            input(name="title", placeholder="title", required, type="text")
+            input(name="description", placeholder="description", required, type="text")
+            input(name="hashtags", placeholder="hashtags", required, type="text")
+            input(type="submit", value="upload")
 
 block scripts
     script(src="/assets/js/recorder.js") 

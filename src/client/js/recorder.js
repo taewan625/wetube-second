@@ -45,6 +45,16 @@ const handleDownload = async () => {
   thumbA.download = "MyThumbnail.jpg"; // download 시 default name + user가 link url로 넘어가는 것이 아니라 download하도록 설정이 변경
   document.body.appendChild(thumbA);
   thumbA.click(); // download 접근
+
+  // video download를 위해서 만든 raw file과 mp4, jpg 파일은 필요없으므로 제거
+  ffmpeg.FS("unlink", "recording.webm");
+  ffmpeg.FS("unlink", "output.mp4");
+  ffmpeg.FS("unlink", "thumbnail.jpg");
+
+  // URL 연결도 끊기 -> user의 browser memory에 있는 file을 지우는 것으로 속도의 향상
+  URL.revokeObjectURL(mp4URL);
+  URL.revokeObjectURL(thumbURL);
+  URL.revokeObjectURL(videoFile);
 };
 
 const handleStop = () => {
@@ -54,6 +64,7 @@ const handleStop = () => {
 
   recorder.stop();
 };
+``;
 
 // video record 시작
 const handleStart = () => {

@@ -23,5 +23,12 @@ videoRouter
   .route("/upload")
   .all(protectorMiddleware)
   .get(getUpload)
-  .post(videoUpload.single("video"), postUpload);
+  .post(
+    videoUpload.fields([
+      { name: "video", maxCount: 1 },
+      { name: "thumb", maxCount: 1 },
+    ]),
+    // multer에 여러개 올릴거라서 single에서 fields로 변경 -> postUpload 변경 필요
+    postUpload
+  );
 export default videoRouter;

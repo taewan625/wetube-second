@@ -9,7 +9,8 @@ form {
     border: 1px solid rgba($color: #fff, $alpha: 0.5);
   }
 }
-input:not(input[type="range"]) {
+input:not(input[type="range"]),
+input[type="submit"] {
   all: unset;
   padding: 15px 20px;
   border-radius: 15px;

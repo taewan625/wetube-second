@@ -84,6 +84,7 @@ const handleStop = () => {
 };
 
 // video record 시작
+// #14.6 source code : handleStop 안쓰고 recoder time을 제한함
 const handleStart = () => {
   actionBtn.innerText = "Stop Recording";
   actionBtn.removeEventListener("click", handleStart);
@@ -108,7 +109,11 @@ const handleStart = () => {
 const init = async () => {
   stream = await navigator.mediaDevices.getUserMedia({
     audio: false,
-    video: true,
+    // upload screen video size edit
+    video: {
+      width: 1024,
+      height: 576,
+    },
   });
   video.srcObject = stream; // src를 upload.pug에 따로 지정하지 않은 것을 여기서 해결
   video.play(); // video 실제 작동 하는 func

@@ -31,6 +31,7 @@ export const getEdit = async (req, res) => {
     return res.status(404).render("404", { pageTitle: "Wrong url" });
   }
   if (String(video.owner) !== String(_id)) {
+    req.flash("error", "Not authorized"); // ("type", "message")
     return res.status(403).redirect("/");
   }
   return res.render("videos/edit", {

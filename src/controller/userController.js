@@ -165,7 +165,9 @@ export const finishGithubLogin = async (req, res) => {
 };
 export const logout = (req, res) => {
   // session 값만 없애야지 user data save 할 수 있고 다시 로그인 할 수 있다.
+  req.flash("info", "bye bye");
   req.session.destroy();
+
   return res.redirect("/");
 };
 
@@ -231,6 +233,7 @@ export const postEdit = async (req, res) => {
 export const getChangePassword = (req, res) => {
   if (req.session.user.socialOnly) return res.redirect("/users/edit");
   // render: wetube/views/FINDING -> wetube/views/users/FINDING | but "/users/change-password" -> wetube/views/FINDING/users/FINDING
+  req.flash("error", "Can't change password"); /// render part!!!
   return res.render("users/change-password", {
     pageTitle: "change-password",
   });
@@ -261,6 +264,7 @@ export const postChangePassword = async (req, res) => {
   user.password = newPassword;
   await user.save(); // mongoose 문법으로 pw hash하기 위함
   req.session.destroy(); // hacker session data 이용 방지 목적
+  req.flash("info", "Password updated");
   return res.redirect("/login");
 };
 

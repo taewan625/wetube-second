@@ -1,3 +1,5 @@
+include mixins/message
+
 doctype html
 html(lang="ko")
   head
@@ -6,6 +8,11 @@ html(lang="ko")
     link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css")
     link(rel="stylesheet", href="/assets/css/styles.css")
   body
+      if messages.error 
+        +messageMixin("error", messages.error)
+      if messages.info
+        +messageMixin("info", messages.info)
+
       include partials/header.pug
       main
         block content

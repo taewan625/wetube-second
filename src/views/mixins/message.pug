@@ -1,0 +1,4 @@
+mixin messageMixin(type, text)
+    //- express-flash는 기본적으로 middlewares locals를 기본적으로 줘서 messages.type으로 값을 추출할 수 있다.
+    div.message(class=type)
+        span=text

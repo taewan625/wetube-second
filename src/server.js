@@ -58,7 +58,8 @@ app.use(flash());
 //router
 app.use(localsMiddleware);
 
-// folder안의 data들을 url상에서 접근할 수 있도록 함
+// folder안의 data들을 url상에서 접근할 수 있도록 함 // 내가 지정한 것에 따라 상대경로 절대경로 설정 가능
+// -> backEnd의 경로에 static 경로를 덮어서 더 풍족하게 만들어준다고 생각하기
 // static은 전역적으로 data를 볼 수 있는 것
 app.use("/uploads", express.static("uploads"));
 app.use("/assets", express.static("assets"));

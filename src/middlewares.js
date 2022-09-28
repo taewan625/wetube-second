@@ -16,7 +16,6 @@ export const protectorMiddleware = (req, res, next) => {
     next();
   } else {
     req.flash("error", "Not authorized"); // ("type", "message")
-
     return res.redirect("/login");
   }
 };
@@ -39,3 +38,8 @@ export const videoUpload = multer({
   dest: "uploads/videos/",
   limits: { fileSize: 10000000 },
 });
+
+// export const thumbUpload = multer({
+//   dest: "uploads/thumbs/",
+//   limits: { fileSize: 3000000000 },
+// });

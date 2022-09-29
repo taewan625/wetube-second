@@ -20,7 +20,16 @@ app.set("views", process.cwd() + "/src/views");
 app.use(logger);
 
 // query
+// 1) html form
 app.use(express.urlencoded({ extended: true })); // html의 form value 이해하고 js object형식으로 전환 req.body 인식할 수 있게 해줌
+// 2) fetch one value
+// fetch의 text를 인식할 수 있도록 함 fetch로 받는 값이 1개일 때
+// app.use(express.text());
+// 3) fetch two value
+// commentSection에서 text와 rating 같이 2가지를 받을 때 처음엔 object형식을 string으로 받아야된다. 왜냐하면 fetch의 body는 object의 값을 나타내지 못하기 때문이다.
+// 두번째로는 string형식으로 바꾸어서 backEnd의 req.body로 값을 가져왔는데 string으로 가지고 온 문제로 인해서 req.body.text 나 req.body.rating으로 각각 값을 가지고 올 수 없다.
+// 그래서 일단은 front에서 back으로 값을 가지고 오고 다시 back에서 req.body로 값을 저장할 때 express.json()이란 function으로 string을 다시 object로 변환한다.
+app.use(express.json()); // json.parse()와 같은 역할 <-> json.stringify()
 
 // session
 app.use(

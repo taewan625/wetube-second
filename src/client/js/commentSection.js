@@ -1,6 +1,19 @@
 const videoContainer = document.getElementById("videoContainer");
-
 const form = document.getElementById("commentForm");
+
+// realtime comment
+const addComment = (text) => {
+  const videoComments = document.querySelector(".video__comments ul");
+  const newComment = document.createElement("li");
+  newComment.className = "video__comment";
+  const icon = document.createElement("i");
+  icon.className = "fas fa-comment";
+  const span = document.createElement("span");
+  span.innerText = ` ${text}`;
+  newComment.appendChild(icon);
+  newComment.appendChild(span);
+  videoComments.prepend(newComment);
+};
 
 const handleSubmit = async (event) => {
   event.preventDefault();
@@ -23,15 +36,20 @@ const handleSubmit = async (event) => {
   if (text === "") {
     return;
   }
-  await fetch(`/api/videos/${id}/comment`, {
+  const { status } = await fetch(`/api/videos/${id}/comment`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json", // express.json을 사용하기 전에 express에게 지금 보내는 것은 json을 string으로 바꾼 것이라고 미리 알려줘야함
     }, // req info
     body: JSON.stringify({ text }), // req.body
   });
+  // console.log(response.status);
   textarea.value = "";
-  window.location.reload();
+  // window.location.reload(); // realtime comments로 보이도록 하는 법
+  if (status === 201) {
+    // console.log("create fake comment ");
+    addComment(text);
+  }
 };
 
 if (form) {

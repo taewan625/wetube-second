@@ -2,16 +2,20 @@ const videoContainer = document.getElementById("videoContainer");
 const form = document.getElementById("commentForm");
 
 // realtime comment
-const addComment = (text) => {
+const addComment = (text, id) => {
   const videoComments = document.querySelector(".video__comments ul");
   const newComment = document.createElement("li");
   newComment.className = "video__comment";
+  newComment.dataset.id = id;
   const icon = document.createElement("i");
   icon.className = "fas fa-comment";
   const span = document.createElement("span");
+  const deleteSpan = document.createElement("span");
+  deleteSpan.innerText = " delete";
   span.innerText = ` ${text}`;
   newComment.appendChild(icon);
   newComment.appendChild(span);
+  newComment.appendChild(deleteSpan);
   videoComments.prepend(newComment);
 };
 
@@ -36,7 +40,7 @@ const handleSubmit = async (event) => {
   if (text === "") {
     return;
   }
-  const { status } = await fetch(`/api/videos/${id}/comment`, {
+  const response = await fetch(`/api/videos/${id}/comment`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json", // express.json을 사용하기 전에 express에게 지금 보내는 것은 json을 string으로 바꾼 것이라고 미리 알려줘야함
@@ -46,9 +50,12 @@ const handleSubmit = async (event) => {
   // console.log(response.status);
   textarea.value = "";
   // window.location.reload(); // realtime comments로 보이도록 하는 법
-  if (status === 201) {
-    // console.log("create fake comment ");
-    addComment(text);
+  // const json = await response.json(); // json으로 backEnd에서 보낸 newCommentId를 추출
+  // console.log(json);
+  if (response.status === 201) {
+    textarea.value = "";
+    const { newCommentId } = await response.json(); // json으로 backEnd에서 보낸 newCommentId를 추출
+    addComment(text, newCommentId);
   }
 };
 

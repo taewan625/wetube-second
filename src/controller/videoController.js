@@ -1,5 +1,6 @@
 import UserModel from "../models/User";
 import VideoModel from "../models/Video";
+import CommentModel from "../models/Commnet";
 
 export const home = async (req, res) => {
   const videos = await VideoModel.find({})
@@ -11,8 +12,10 @@ export const home = async (req, res) => {
 // mongoose의 populate: ref가 되어있는 key를 populate안에 넣어주면 key의 실제 존재 db로 찾아가서 그것의 모든 object를 가지고 온다.
 export const watch = async (req, res) => {
   const { id } = req.params;
-  const video = await VideoModel.findById(id).populate("owner");
-  // console.log(video); // users data 다 가지고 옴
+  const video = await VideoModel.findById(id)
+    .populate("owner")
+    .populate("comments");
+  console.log(video); // users data 다 가지고 옴
   if (video === null) {
     return res.status(404).render("404", { pageTitle: "Wrong url" });
   } else {
@@ -141,9 +144,28 @@ export const registerView = async (req, res) => {
   return res.sendStatus(200);
 };
 
-export const createComment = (req, res) => {
+export const createComment = async (req, res) => {
   // console.log(req.body);
   // console.log(req.params);
   // console.log(req.body.text, req.body.rating);
-  return res.end();
+  // console.log(req.session.user);
+  const {
+    session: { user },
+    body: { text },
+    params: { id },
+  } = req;
+  const video = await VideoModel.findById(id);
+
+  if (!video) {
+    return res.sendStatus(404);
+  }
+  const comment = await CommentModel.create({
+    text,
+    owner: user._id,
+    //Comment.js에서 type이 ObjectId이므로 objectid가 필요함
+    video: id,
+  });
+  video.comments.push(comment._id);
+  video.save();
+  return res.sendStatus(201);
 };

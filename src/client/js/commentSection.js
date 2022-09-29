@@ -2,7 +2,7 @@ const videoContainer = document.getElementById("videoContainer");
 
 const form = document.getElementById("commentForm");
 
-const handleSubmit = (event) => {
+const handleSubmit = async (event) => {
   event.preventDefault();
   const textarea = form.querySelector("textarea");
   const text = textarea.value;
@@ -23,14 +23,17 @@ const handleSubmit = (event) => {
   if (text === "") {
     return;
   }
-  fetch(`/api/videos/${id}/comment`, {
+  await fetch(`/api/videos/${id}/comment`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json", // express.json을 사용하기 전에 express에게 지금 보내는 것은 json을 string으로 바꾼 것이라고 미리 알려줘야함
     }, // req info
     body: JSON.stringify({ text }), // req.body
   });
+  textarea.value = "";
+  window.location.reload();
 };
+
 if (form) {
   form.addEventListener("submit", handleSubmit);
 }

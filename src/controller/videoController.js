@@ -15,7 +15,7 @@ export const watch = async (req, res) => {
   const video = await VideoModel.findById(id)
     .populate("owner")
     .populate("comments");
-  console.log(video); // users data 다 가지고 옴
+  // console.log(video); // users data 다 가지고 옴
   if (video === null) {
     return res.status(404).render("404", { pageTitle: "Wrong url" });
   } else {
@@ -50,8 +50,8 @@ export const postEdit = async (req, res) => {
   if (!video) {
     return res.status(400).render("404", { pageTitle: "Wrong url" });
   }
-  console.log(video);
-  console.log(video.owner, _id);
+  // console.log(video);
+  // console.log(video.owner, _id);
   if (String(video.owner) !== String(_id)) {
     return res.status(403).redirect("/");
   }
@@ -170,6 +170,17 @@ export const createComment = async (req, res) => {
   return res.status(201).json({ newCommentId: comment._id }); // json을 통해서 comment._id를 frontEnd 로 보내줌
 };
 
-export const deleteComment = (req, res) => {
-  res.end();
+export const deleteComment = async (req, res) => {
+  const {
+    params: { id },
+    body: { commentId },
+  } = req;
+  const video = await VideoModel.findById(id).populate("comments");
+  if (!video) {
+    return res.sendStatus(404);
+  }
+  await CommentModel.findByIdAndDelete(commentId);
+  video.comments.splice(video.comments.indexOf(commentId), 2);
+  video.save();
+  return res.status(202).json({ deleteCommentId: commentId });
 };

@@ -1,30 +1,19 @@
 const videoContainer = document.getElementById("videoContainer");
 const form = document.getElementById("commentForm");
-const deleteComments = document.getElementsByClassName("deleteComment");
-let deleteComment;
-for (i = 0; i < deleteComments.length; i++) {
-  deleteComment = deleteComments[i];
-  deleteComment.addEventListener("click", async (e) => {
-    const { id } = videoContainer.dataset;
-    const commentId = e.path[1].dataset.id;
-    const response = await fetch(`/api/videos/${id}/commentDelete`, {
-      method: "delete",
-      headers: {
-        "Content-Type": "application/json", // express.json을 사용하기 전에 express에게 지금 보내는 것은 json을 string으로 바꾼 것이라고 미리 알려줘야함
-      }, // req info
-      body: JSON.stringify({ commentId }), // req.body
-    });
-    // console.log(await response.json());
-    if (response.status === 202) {
-      const { deleteCommentId } = await response.json();
-      realtimeDeleteComment(deleteCommentId);
-    }
+
+let deleteComments = document.querySelectorAll(".deleteComment");
+
+const handleDeleteComment = async (event) => {
+  const li = event.srcElement.parentNode;
+  // console.log(event);
+  const {
+    dataset: { id: commentId },
+  } = li;
+  // console.log(commentId);
+  await fetch(`/api/comments/${commentId}/delete`, {
+    method: "DELETE",
   });
-}
-const realtimeDeleteComment = (id) => {
-  const deleteCommentli = document.querySelector(`li[data-id="${id}"]`);
-  // console.log(deleteCommentli);
-  deleteCommentli.remove();
+  li.remove();
 };
 
 // realtime comment
@@ -89,3 +78,36 @@ const handleSubmit = async (event) => {
 if (form) {
   form.addEventListener("submit", handleSubmit);
 }
+if (deleteComments) {
+  deleteComments.forEach((deleteComment) => {
+    deleteComment.addEventListener("click", handleDeleteComment);
+  });
+}
+
+// const deleteComments = document.getElementsByClassName("deleteComment");
+// let deleteComment;
+// for (i = 0; i < deleteComments.length; i++) {
+//   deleteComment = deleteComments[i];
+//   deleteComment.addEventListener("click", async (e) => {
+//     const { id } = videoContainer.dataset;
+//     const commentId = e.path[1].dataset.id;
+//     const response = await fetch(`/api/videos/${id}/commentDelete`, {
+//       method: "delete",
+//       headers: {
+//         "Content-Type": "application/json", // express.json을 사용하기 전에 express에게 지금 보내는 것은 json을 string으로 바꾼 것이라고 미리 알려줘야함
+//       }, // req info
+//       body: JSON.stringify({ commentId }), // req.body
+//     });
+//     // console.log(await response.json());
+//     if (response.status === 202) {
+//       const { deleteCommentId } = await response.json();
+//       realtimeDeleteComment(deleteCommentId);
+//     }
+//   });
+// }
+
+// const realtimeDeleteComment = (id) => {
+//   const deleteCommentli = document.querySelector(`li[data-id="${id}"]`);
+//   // console.log(deleteCommentli);
+//   deleteCommentli.remove();
+// };

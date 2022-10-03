@@ -40,11 +40,6 @@ userRouter
   .all(protectorMiddleware)
   .get(getDeleteAccount)
   .post(postDeleteAccount);
-userRouter
-  .route("/delete-account-socialOnly")
-  .all(protectorMiddleware)
-  .get(getDeleteAccountSocial)
-  .post(postDeleteAccountSocial);
 userRouter.get("/github/start", publicOnlyMiddleware, startGithubLogin);
 userRouter.get("/github/finish", publicOnlyMiddleware, finishGithubLogin);
 userRouter.get("/:id", see);

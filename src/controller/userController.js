@@ -303,50 +303,37 @@ export const getDeleteAccount = (req, res) => {
 export const postDeleteAccount = async (req, res) => {
   const {
     session: {
-      user: { _id, password },
+      user: { _id, password, socialOnly },
     },
     body: { conPassword },
   } = req;
-  const confirmPassword = await bcrypt.compare(conPassword, password);
-  if (!confirmPassword) {
-    return res.status(400).render("users/delete-account", {
-      pageTitle: "delete-account",
-      errorMessage: "Current password is incorrect",
-    });
-  }
-  const user = await UserModel.findById(_id);
-  const video = user.myVideos; //array를 string으로 변환
-  video.forEach(
-    async (videoId) =>
-      await CommentModel.deleteMany({
-        $or: [{ owner: _id }, { video: videoId }],
-      })
-  );
-  await VideoModel.deleteMany({ owner: _id }); // 한번에 여러 video 삭제
-  await UserModel.findByIdAndDelete(_id);
-  req.session.destroy();
-  return res.redirect("/");
-};
 
-// social login으로 회원탈퇴방법
-export const getDeleteAccountSocial = (req, res) => {
-  return res.render("users/delete-account", {
-    pageTitle: "delete-account",
-  });
-};
-// social login으로 회원탈퇴방법
-export const postDeleteAccountSocial = async (req, res) => {
-  const { _id } = req.session.user;
-  const user = await UserModel.findById(_id);
-  const video = user.myVideos; //array를 string으로 변환
-  video.forEach(
-    async (videoId) =>
-      await CommentModel.deleteMany({
-        $or: [{ owner: _id }, { video: videoId }],
-      })
-  );
-  await VideoModel.deleteMany({ owner: _id }); // 한번에 여러 video 삭제
-  await UserModel.findByIdAndDelete(_id);
+  const deleteAccount = async (_id) => {
+    const user = await UserModel.findById(_id);
+    const video = user.myVideos; //array를 string으로 변환
+    video.forEach(
+      async (videoId) =>
+        await CommentModel.deleteMany({
+          $or: [{ owner: _id }, { video: videoId }],
+        })
+    );
+    await VideoModel.deleteMany({ owner: _id }); // 한번에 여러 video 삭제
+    await UserModel.findByIdAndDelete(_id);
+  };
+
+  if (!socialOnly) {
+    const confirmPassword = await bcrypt.compare(conPassword, password);
+    if (!confirmPassword) {
+      return res.status(400).render("users/delete-account", {
+        pageTitle: "delete-account",
+        errorMessage: "Current password is incorrect",
+      });
+    }
+    deleteAccount(_id);
+    req.session.destroy();
+    return res.redirect("/");
+  }
+  deleteAccount(_id);
   req.session.destroy();
   return res.redirect("/");
 };

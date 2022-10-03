@@ -108,6 +108,7 @@ export const deleteVideo = async (req, res) => {
   if (String(video.owner) !== String(_id)) {
     return res.status(403).redirect("/");
   }
+  await CommentModel.deleteMany({ video: video._id });
   await VideoModel.findByIdAndDelete(id);
   user.myVideos.splice(user.myVideos.indexOf(id), 2); // method: indexOf(), spliac(array,deletecount,addsomthing)
   user.save(); // save 해주어야지 updata가 된다.

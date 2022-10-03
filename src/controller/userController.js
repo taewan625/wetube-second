@@ -2,6 +2,7 @@ import UserModel from "../models/User";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 import VideoModel from "../models/Video";
+import CommentModel from "../models/Commnet";
 
 export const getJoin = (req, res) =>
   res.render("users/join", { pageTitle: "Join" });
@@ -42,6 +43,7 @@ export const postJoin = async (req, res) => {
       username,
       password,
       location,
+      avatarUrl: "uploads/avatars/7b56d3f2bde859fa3b5df9bc3d1779b1",
     });
     return res.redirect("/login");
   } catch (error) {
@@ -184,7 +186,6 @@ export const postEdit = async (req, res) => {
     body: { name, email, username, location },
     file,
   } = req;
-
   const usernameExists = await UserModel.exists(
     // 순서도 중요 : _id를 제외한 후 -> username 찾는다.
     { _id: { $nin: [_id] } },
@@ -290,4 +291,62 @@ export const see = async (req, res) => {
       .status(404)
       .render("404", { pageTitle: "404", errorMessage: err._message });
   }
+};
+
+// function이 2번 반복됨. if social true false 이용해서 하나로 묶어주기
+
+// local login 회원탈퇴방법
+export const getDeleteAccount = (req, res) => {
+  return res.render("users/delete-account", { pageTitle: "delete-account" });
+};
+
+export const postDeleteAccount = async (req, res) => {
+  const {
+    session: {
+      user: { _id, password },
+    },
+    body: { conPassword },
+  } = req;
+  const confirmPassword = await bcrypt.compare(conPassword, password);
+  if (!confirmPassword) {
+    return res.status(400).render("users/delete-account", {
+      pageTitle: "delete-account",
+      errorMessage: "Current password is incorrect",
+    });
+  }
+  const user = await UserModel.findById(_id);
+  const video = user.myVideos; //array를 string으로 변환
+  video.forEach(
+    async (videoId) =>
+      await CommentModel.deleteMany({
+        $or: [{ owner: _id }, { video: videoId }],
+      })
+  );
+  await VideoModel.deleteMany({ owner: _id }); // 한번에 여러 video 삭제
+  await UserModel.findByIdAndDelete(_id);
+  req.session.destroy();
+  return res.redirect("/");
+};
+
+// social login으로 회원탈퇴방법
+export const getDeleteAccountSocial = (req, res) => {
+  return res.render("users/delete-account", {
+    pageTitle: "delete-account",
+  });
+};
+// social login으로 회원탈퇴방법
+export const postDeleteAccountSocial = async (req, res) => {
+  const { _id } = req.session.user;
+  const user = await UserModel.findById(_id);
+  const video = user.myVideos; //array를 string으로 변환
+  video.forEach(
+    async (videoId) =>
+      await CommentModel.deleteMany({
+        $or: [{ owner: _id }, { video: videoId }],
+      })
+  );
+  await VideoModel.deleteMany({ owner: _id }); // 한번에 여러 video 삭제
+  await UserModel.findByIdAndDelete(_id);
+  req.session.destroy();
+  return res.redirect("/");
 };

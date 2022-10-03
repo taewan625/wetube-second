@@ -1,0 +1,13 @@
+extends ../base
+
+block content
+    span After delete-account, your all data(videos, comment, user-info) is delete from our website.
+    if !loggedInUser.socialOnly
+        form(method="POST")
+            span=errorMessage
+            input(type ="password", name="conPassword",required, placeholder="confirm password")
+            input(type="submit", value="Delete-account")
+    if loggedInUser.socialOnly
+        form(method="POST")
+            span=errorMessage
+            input(type="submit", value="Delete-account")

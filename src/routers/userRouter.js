@@ -8,6 +8,10 @@ import {
   finishGithubLogin,
   getChangePassword,
   postChangePassword,
+  getDeleteAccount,
+  postDeleteAccount,
+  getDeleteAccountSocial,
+  postDeleteAccountSocial,
 } from "../controller/userController";
 
 import {
@@ -31,6 +35,16 @@ userRouter
   .all(protectorMiddleware)
   .get(getChangePassword)
   .post(postChangePassword);
+userRouter
+  .route("/delete-account")
+  .all(protectorMiddleware)
+  .get(getDeleteAccount)
+  .post(postDeleteAccount);
+userRouter
+  .route("/delete-account-socialOnly")
+  .all(protectorMiddleware)
+  .get(getDeleteAccountSocial)
+  .post(postDeleteAccountSocial);
 userRouter.get("/github/start", publicOnlyMiddleware, startGithubLogin);
 userRouter.get("/github/finish", publicOnlyMiddleware, finishGithubLogin);
 userRouter.get("/:id", see);

@@ -10,6 +10,10 @@ block content
         input(name="username", type="text", required, placeholder="username", value=loggedInUser.username)
         input(name="location", type="text", required, placeholder="location", value=loggedInUser.location)
         input(type="submit", value="Update profile")
+        if loggedInUser.socialOnly
+            a(href="delete-account-socialOnly") delete account &rarr;
         if !loggedInUser.socialOnly
             div.edit-profile__password
                 a(href="change-password") change password &rarr;
+                br
+                a(href="delete-account") delete account &rarr;

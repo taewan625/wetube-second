@@ -8,6 +8,16 @@
     video {
       max-width: 100%;
       margin-bottom: 10px;
+      border-radius: 15px;
+      border: 5px solid gold;
+      outline: 5px solid blue;
+    }
+    .social__btn {
+      background: linear-gradient(to bottom right, gold, blue);
+      width: 30%;
+      margin-bottom: 20px;
+      color: white;
+      font-size: 20px;
     }
   }
 }

@@ -43,7 +43,7 @@ export const postJoin = async (req, res) => {
       username,
       password,
       location,
-      avatarUrl: "uploads/avatars/7b56d3f2bde859fa3b5df9bc3d1779b1",
+      avatarUrl: "uploads/avatars/0e1514796f8b7cf93381e6be521cef11",
     });
     return res.redirect("/login");
   } catch (error) {
@@ -234,7 +234,6 @@ export const postEdit = async (req, res) => {
 export const getChangePassword = (req, res) => {
   if (req.session.user.socialOnly) return res.redirect("/users/edit");
   // render: wetube/views/FINDING -> wetube/views/users/FINDING | but "/users/change-password" -> wetube/views/FINDING/users/FINDING
-  req.flash("error", "Can't change password"); /// render part!!!
   return res.render("users/change-password", {
     pageTitle: "change-password",
   });
@@ -265,7 +264,6 @@ export const postChangePassword = async (req, res) => {
   user.password = newPassword;
   await user.save(); // mongoose 문법으로 pw hash하기 위함
   req.session.destroy(); // hacker session data 이용 방지 목적
-  req.flash("info", "Password updated");
   return res.redirect("/login");
 };
 

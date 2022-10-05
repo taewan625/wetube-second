@@ -11,7 +11,12 @@ block content
         input(name="conPassword", type="password", required, placeholder="confirm password")
         input(name="location", type="text", required, placeholder="location")
         input(type="submit", value="Join")
+        br
+        include ../partials/social-login.pug
+            block span
+                |  Join with Github &rarr;
 
     div.auth-switch
         span Already have an account? 
         a(href="/login") Log in now &rarr;
+

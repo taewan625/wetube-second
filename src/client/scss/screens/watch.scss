@@ -1,7 +1,19 @@
+.video__databox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.video__owner-avatar {
+  margin-right: 10px;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
 .video__data {
   margin-top: 20px;
   display: flex;
-  flex-direction: column;
   .video__title {
     font-size: 26px;
     margin-bottom: 5px;
@@ -9,15 +21,28 @@
   .video__createdAt {
     font-size: 12px;
   }
-  .video__owner {
-    margin-bottom: 5px;
-    font-size: 14px;
-    a {
-      color: cornflowerblue;
-      text-decoration: underline;
+  .video__data-detail {
+    display: flex;
+    flex-direction: column;
+    .video__title {
+      font-size: medium;
+      font-weight: bolder;
+      margin-bottom: 10px;
+    }
+  }
+  .video__data-sub {
+    display: flex;
+    align-items: center;
+    .video__owner {
+      font-size: small;
+      margin-right: 7px;
+    }
+    .video__createdAt {
+      margin-right: 3px;
     }
   }
 }
+
 .video__comments {
   display: flex;
   flex-direction: column;
@@ -26,10 +51,44 @@
   margin: 0 auto;
   margin-top: 20px;
   .video__comment {
-    background-color: white;
-    color: black;
+    display: flex;
+    align-items: center;
+    color: white;
     margin-bottom: 10px;
     padding: 10px;
-    border-radius: 20px;
+    .video__owner-comment {
+      width: 90%;
+      display: flex;
+      justify-content: space-between;
+      .deleteComment {
+        color: rgb(235, 211, 25);
+      }
+    }
+  }
+}
+.video__option {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  .video__option-edit {
+    margin: 5px 0px;
+  }
+}
+#commentForm {
+  background: none;
+  border: none;
+  display: flex;
+  textarea {
+    background-color: yellow;
+    border-radius: 10em;
+    border: none;
+    margin-right: 10px;
+    text-indent: 10px;
+  }
+  button {
+    background: blue;
+    color: white;
+    border-radius: 10em;
+    border: none;
   }
 }

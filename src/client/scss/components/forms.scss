@@ -9,8 +9,9 @@ form {
     border: 1px solid rgba($color: #fff, $alpha: 0.5);
   }
 }
-input:not(input[type="range"]) {
-  all: unset;
+input:not(input[type="range"]):not(input[type="submit"]) {
+  // all: unset;
+  color: #fff;
   padding: 15px 20px;
   border-radius: 15px;
   border: 1px solid $line;
@@ -23,16 +24,25 @@ input:not(input[type="range"]) {
   }
 }
 
-input[type="submit"],
-.social__btn {
+input[type="submit"] {
   margin-top: 10px;
+  background: linear-gradient(to bottom right, gold, blue) !important;
+  width: 420px;
+  color: #fff;
+  border-radius: 15px;
+  border: none;
+  padding: 15px 20px;
+  cursor: pointer;
+  text-align: center;
+}
+.social__btn {
+  width: 90%;
+  margin-top: 5px;
   border: 1px solid $line;
   border-radius: 15px;
   padding: 15px 20px;
-  background: linear-gradient(#fe3933, #f10901) !important;
-  text-align: center;
-  cursor: pointer;
   display: block;
+  text-align: center;
   border: none;
   &:focus {
     outline: none;

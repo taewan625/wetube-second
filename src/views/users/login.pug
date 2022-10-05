@@ -8,6 +8,8 @@ block content
         input(name="password", type="password", required, placeholder="password")
         input(type="submit", value="Log in")
         include ../partials/social-login.pug
+            block span
+                |  Continue with Github &rarr;
     div.auth-switch
         span Dont have an account? 
         a(href="/join") Join now &rarr;

@@ -3,6 +3,8 @@
   border-top: 1px solid $line;
   padding-top: 20px;
   a {
-    text-decoration: underline;
+    display: block;
+    text-decoration: none;
+    margin-bottom: 8px;
   }
 }

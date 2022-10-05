@@ -11,10 +11,12 @@ module.exports = {
     recorder: BASE_JS + "recorder.js",
     commentSection: BASE_JS + "commentSection.js",
   },
-  // webpack compile-file이 empty file로 나오는 경우
-  mode: "development",
-  // node.js의 nodemon같은 것, server가 안꺼짐
-  watch: true,
+  // // webpack compile-file이 empty file로 나오는 경우
+  // mode: "development", -> package.json으로 설정할 것임
+
+  // // node.js의 nodemon같은 것, server가 안꺼짐
+  // watch: true, -> development에서만 필요한 것
+
   plugins: [
     new MiniCssExtractPlugin({
       filename: "css/styles.css",

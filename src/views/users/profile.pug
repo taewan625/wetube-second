@@ -3,7 +3,7 @@ include ../mixins/video
 
 block content
     div.profile__data
-        if loggedInUser.avatarUrl.includes("github")
+        if loggedInUser.socialOnly.toString().includes("github")
             img.avatar(src=loggedInUser.avatarUrl)
         else 
             img.avatar(src="/" + loggedInUser.avatarUrl)

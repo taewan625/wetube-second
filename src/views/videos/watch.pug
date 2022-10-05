@@ -23,7 +23,7 @@ block content
         div.video__data
             div.video__data-owner
                 a(href=`/users/${video.owner._id}`)
-                    if loggedInUser.avatarUrl.includes("github")
+                    if loggedInUser.socialOnly.toString().includes("github")
                         img.header__avatar(src=loggedInUser.avatarUrl)
                     else 
                         img.header__avatar(src="/" + loggedInUser.avatarUrl)

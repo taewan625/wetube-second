@@ -23,7 +23,10 @@ block content
         div.video__data
             div.video__data-owner
                 a(href=`/users/${video.owner._id}`)
-                    img.video__owner-avatar(src="/" + loggedInUser.avatarUrl)
+                    if loggedInUser.avatarUrl.includes("github")
+                        img.header__avatar(src=loggedInUser.avatarUrl)
+                    else 
+                        img.header__avatar(src="/" + loggedInUser.avatarUrl)
             div.video__data-detail
                 medium.video__title=video.title
                 div.video__data-sub

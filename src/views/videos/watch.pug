@@ -2,7 +2,7 @@ extends ../base
 
 block content
     div#videoContainer(data-id=video._id)
-        video(src=heroku? video.fileUrl: "/"+ video.fileUrl)
+        video(crossorigin src=heroku? video.fileUrl: "/"+ video.fileUrl)
         div#videoControls.videoControls.videoControls-div
             div.videoControls__play
                 span#play.videoControls__playBtn

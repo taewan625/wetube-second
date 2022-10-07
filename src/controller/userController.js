@@ -214,7 +214,7 @@ export const postEdit = async (req, res) => {
       errorMessage: "This email is already exists",
     });
   }
-
+  console.log(file);
   const updatedUser = await UserModel.findByIdAndUpdate(
     _id,
     {

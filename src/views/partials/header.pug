@@ -23,9 +23,9 @@ header
                         else
                             if loggedInUser.avatarUrl
                                 if loggedInUser.socialOnly.toString().includes("github")
-                                    img.header__avatar(src=heroku? loggedInUser.avatarUrl: "/"+loggedInUser.avatarUrl)
+                                    img.header__avatar(src=heroku? loggedInUser.avatarUrl : "/"+loggedInUser.avatarUrl crossorigin)
                                 else 
-                                    img.header__avatar(src=heroku? loggedInUser.avatarUrl: "/"+loggedInUser.avatarUrl)
+                                    img.header__avatar(src=heroku? loggedInUser.avatarUrl: "/"+loggedInUser.avatarUrl crossorigin)
 
             else
                 li 

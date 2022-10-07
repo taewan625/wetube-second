@@ -43,7 +43,6 @@ export const postJoin = async (req, res) => {
       username,
       password,
       location,
-      avatarUrl: "uploads/avatars/0e1514796f8b7cf93381e6be521cef11",
     });
     return res.redirect("/login");
   } catch (error) {

@@ -1,9 +1,11 @@
 import multer from "multer";
 import multerS3 from "multer-s3";
-import { S3Client } from "@aws-sdk/client-s3";
+import { S3Client, S3 } from "@aws-sdk/client-s3";
+// import aws from "aws-sdk"
 
 // AWS s3에 접근할 수 있는 API key secret 작성
 const s3 = new S3Client({
+  region: "ap-northeast-2",
   credentials: {
     accesskeyId: process.env.AWS_ID,
     secretAccessKey: process.env.AWS_SECRET,

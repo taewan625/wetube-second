@@ -24,9 +24,9 @@ block content
             div.video__data-owner
                 a(href=`/users/${video.owner._id}`)
                     if loggedInUser.socialOnly.toString().includes("github")
-                        img.header__avatars(src=heroku? loggedInUser.avatarUrl: "/"+loggedInUser.avatarUrl)
+                        img.header__avatars(crossorigin src=heroku? loggedInUser.avatarUrl: "/"+loggedInUser.avatarUrl)
                     else 
-                        img.header__avatars(src=heroku? loggedInUser.avatarUrl: "/"+loggedInUser.avatarUrl)
+                        img.header__avatars(crossorigin src=heroku? loggedInUser.avatarUrl: "/"+loggedInUser.avatarUrl)
             div.video__data-detail
                 medium.video__title=video.title
                 div.video__data-sub

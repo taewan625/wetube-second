@@ -10,8 +10,6 @@ import {
   postChangePassword,
   getDeleteAccount,
   postDeleteAccount,
-  getDeleteAccountSocial,
-  postDeleteAccountSocial,
 } from "../controller/userController";
 
 import {

@@ -1,7 +1,7 @@
 //- mixin: Data를 받을 수 있는 일종의 미리 만들어진 HTML block.
 mixin videoMixin(video)
     a(href=`/videos/${video.id}`).video-mixin
-        div.video-mixin__thumb(style=`background-image:url(/${video.thumbUrl});background-size:cover;background-position:center`)
+        div.video-mixin__thumb(style=`background-image:url(${video.thumbUrl});background-size:cover;background-position:center`)
         //- div에 thumbUrl을 넣어서 background-image를 넣은 것 ; 부분은 css로 작동시키는 것
         div.video-mixin__data 
             span.video-mixin__title=video.title

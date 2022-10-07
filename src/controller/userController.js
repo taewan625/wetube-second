@@ -43,6 +43,7 @@ export const postJoin = async (req, res) => {
       username,
       password,
       location,
+      // avatarUrl: "uploads/avatars/0e1514796f8b7cf93381e6be521cef11",
     });
     return res.redirect("/login");
   } catch (error) {
@@ -218,7 +219,7 @@ export const postEdit = async (req, res) => {
     _id,
     {
       // if문 없이 avatarUrl:file.path하면 file upload안할 시 .path를 찾을 수 없어서 error 생김
-      avatarUrl: file ? file.path : avatarUrl,
+      avatarUrl: file ? file.location : avatarUrl,
       name,
       email,
       username,

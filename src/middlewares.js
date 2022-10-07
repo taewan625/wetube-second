@@ -1,5 +1,5 @@
 import { S3Client } from "@aws-sdk/client-s3"; // ver3 이므로 multerS3 version 또한 3.x.x로 맞춰줘야함
-// import aws from "aws-sdk"; -> "aws-sdk" version은 2.x.x여서 multer-s3 설치시 npm i nulter-s3@^2.10.0으로 진행
+// import aws from "aws-sdk"; -> "aws-sdk" version은 2.x.x여서 multer-s3 설치시 npm i multer-s3@^2.10.0으로 진행
 import multer from "multer";
 import multerS3 from "multer-s3";
 
@@ -27,6 +27,7 @@ const s3 = new S3Client({
 const upload = multerS3({
   s3: s3,
   bucket: "setubee",
+  acl: "public-read",
 });
 
 export const localsMiddleware = (req, res, next) => {

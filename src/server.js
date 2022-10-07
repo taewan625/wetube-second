@@ -55,9 +55,13 @@ app.use(
 // });
 
 //ffmpeg error solve
+// #17.8 이미지 upload가 제대로 되지 않는 경우 해결책. 이유는 모름
 app.use((req, res, next) => {
-  res.header("Cross-Origin-Embedder-Policy", "require-corp");
-  res.header("Cross-Origin-Opener-Policy", "same-origin");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   next();
 });
 

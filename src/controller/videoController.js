@@ -75,12 +75,14 @@ export const postUpload = async (req, res) => {
   // console.log(req.files); req.field -> req.fields로 변경 됨. single이 아니기 때문
   const { video, thumb } = req.files;
   const { title, description, hashtags } = req.body;
+  const heroku = process.env.NODE_ENV === "production";
+
   try {
     const newVideo = await VideoModel.create({
       title,
       description,
-      fileUrl: video[0].location,
-      thumbUrl: thumb[0].location,
+      fileUrl: heroku ? video[0].location : video[0].path,
+      thumbUrl: heroku ? thumb[0].location : thumb[0].path,
       owner: _id,
       hashtags: VideoModel.formatHashtags(hashtags),
     });

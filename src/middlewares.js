@@ -22,12 +22,32 @@ const s3 = new S3Client({
   },
 });
 
+// develop working시 multer s3 사용 안하는 방법
+const heroku = process.env.NODE_ENV === "production";
+
 // aip연결 후 AWS 어느 bucket에 저장할지 설정
 // multer-s3의 read-me에서 storage안에 multerS3이 들어가는 걸로 적용이 되어있는데 이는 const avaterupload와 const videoUpload안에 이미 들어있기 때문에 일부만 쓰는 것
-const upload = multerS3({
+const s3ImageUploader = multerS3({
   s3: s3,
   bucket: "setubee",
   acl: "public-read",
+  // bucket 안에 folder 속에 file 분류하기
+  key: function (request, file, ab_callback) {
+    const newFileName = Date.now() + "-" + file.originalname;
+    const fullPath = "images/" + newFileName;
+    ab_callback(null, fullPath);
+  },
+});
+
+const s3VideoUploader = multerS3({
+  s3: s3,
+  bucket: "setubee",
+  acl: "public-read",
+  key: function (request, file, ab_callback) {
+    const newFileName = Date.now() + "-" + file.originalname;
+    const fullPath = "videos/" + newFileName;
+    ab_callback(null, fullPath);
+  },
 });
 
 export const localsMiddleware = (req, res, next) => {
@@ -37,6 +57,7 @@ export const localsMiddleware = (req, res, next) => {
   // console.log(req.session);
   res.locals.siteName = "wetube"; // base.pug title에 사용
   // console.log(res.locals);
+  res.locals.heroku = heroku;
   next();
 };
 
@@ -62,13 +83,13 @@ export const publicOnlyMiddleware = (req, res, next) => {
 export const avatarUpload = multer({
   dest: "uploads/avatars/",
   limits: { fileSize: 3000000 },
-  storage: upload,
+  storage: heroku ? s3ImageUploader : undefined,
 });
 // edit profile의 input의 파일을 받고 -> router에서 post middleware로 간 후 여기서 uploads에 file 저장 후 postEdit controller로 이동
 export const videoUpload = multer({
   dest: "uploads/videos/",
   limits: { fileSize: 10000000 },
-  storage: upload, // 이렇게 보면 storage안에 multerS3의 값이 들어가는 것이 성립
+  storage: heroku ? s3VideoUploader : undefined, // 이렇게 보면 storage안에 multerS3의 값이 들어가는 것이 성립
 });
 
 // export const thumbUpload = multer({

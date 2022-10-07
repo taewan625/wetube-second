@@ -214,12 +214,15 @@ export const postEdit = async (req, res) => {
       errorMessage: "This email is already exists",
     });
   }
-  console.log(file);
+  // console.log(file);
+
+  const heroku = process.env.NODE_ENV === "production";
+
   const updatedUser = await UserModel.findByIdAndUpdate(
     _id,
     {
       // if문 없이 avatarUrl:file.path하면 file upload안할 시 .path를 찾을 수 없어서 error 생김
-      avatarUrl: file ? file.location : avatarUrl,
+      avatarUrl: file ? (heroku ? file.location : file.path) : avatarUrl,
       name,
       email,
       username,

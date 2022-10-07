@@ -30,11 +30,7 @@ const heroku = process.env.NODE_ENV === "production";
 const s3ImageUploader = multerS3({
   s3: s3,
   bucket: "setubee",
-  Condition: {
-    StringEquals: {
-      "s3:x-amz-acl": ["public-read"],
-    },
-  },
+  acl: "public-read",
   // bucket 안에 folder 속에 file 분류하기
   key: function (request, file, ab_callback) {
     const newFileName = Date.now() + "-" + file.originalname;
@@ -46,11 +42,7 @@ const s3ImageUploader = multerS3({
 const s3VideoUploader = multerS3({
   s3: s3,
   bucket: "setubee",
-  Condition: {
-    StringEquals: {
-      "s3:x-amz-acl": ["public-read"],
-    },
-  },
+  acl: "public-read",
   key: function (request, file, ab_callback) {
     const newFileName = Date.now() + "-" + file.originalname;
     const fullPath = "videos/" + newFileName;

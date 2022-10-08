@@ -55,8 +55,8 @@ const handleDownload = async () => {
   const mp4Url = URL.createObjectURL(mp4Blob);
   const thumbUrl = URL.createObjectURL(thumbBlob);
 
-  downloadFile(mp4Url, "MyRecording.mp4");
   downloadFile(thumbUrl, "MyThumbnail.jpg");
+  downloadFile(mp4Url, "MyRecording.mp4");
 
   // video download를 위해서 만든 raw file과 mp4, jpg 파일은 필요없으므로 제거
   ffmpeg.FS("unlink", files.input);
